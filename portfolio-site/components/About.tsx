@@ -37,13 +37,17 @@ export default function About() {
               <div className="absolute inset-0 rounded-2xl blur-3xl opacity-20" style={{ background: 'linear-gradient(to right, rgba(163, 163, 128, 0.3), rgba(214, 206, 147, 0.3))' }} />
               <div className="relative bg-dark-card rounded-2xl p-8 border border-gray-800 backdrop-blur-sm">
                 <p className="text-lg text-gray-300 leading-relaxed mb-4">
-                  I'm a <span className="text-custom-olive font-semibold">Machine Learning Engineer</span> and 
-                  Computer Science student at UC San Diego, passionate about building AI systems that make 
+                  I'm a <span className="text-custom-olive font-semibold">Software </span> and <span className="text-custom-olive font-semibold">Machine Learning Engineer</span>, and a
+                  Computer Science student at <span className="text-custom-olive font-semibold">UC San Diego</span>, passionate about building AI and web systems that make 
                   a real impact. Currently, I'm a ML Fellow at <span className="text-custom-sage">Cornell Tech's Break Through Tech AI</span> program 
-                  and working on exciting projects at <span className="text-custom-cream">Arity</span>.
+                  where I have worked on exciting projects at <span className="text-custom-cream">Arity</span>, and recently won the <span className="text-custom-cream">Best Coast </span>
+                  hackathon with CareFi, a web service built to support your dermatological needs.
                 </p>
-                
-                <p className="text-lg text-gray-300 leading-relaxed">
+                <p className="text-lg text-gray-300 leading-relaxed mt-4">
+                  Outside of engineering, I’m a life-long artist and musician, which naturally shapes how I build software — 
+                  I love creating things that feel intuitive, expressive, and thoughtfully designed.
+                </p>
+                <p className="text-lg text-gray-300 leading-relaxed mt-4">
                   I'm always excited to collaborate on projects that push the boundaries of what's possible 
                   with machine learning, whether it's computer vision, NLP, or building production-ready ML systems.
                 </p>

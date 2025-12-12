@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 
 const navItems = [
   { name: 'Home', href: '#home' },
@@ -14,7 +14,8 @@ const navItems = [
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
-  const [activeSection, setActiveSection] = useState('home')
+  const [activeSection, setActiveSection] = useState('')
+  const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -34,6 +35,15 @@ export default function Navbar() {
 
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) setMenuOpen(false)
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
   }, [])
 
   return (
@@ -60,11 +70,13 @@ export default function Navbar() {
               const isActive = activeSection === sectionId
               
               return (
-                <a
+                <motion.a
                   key={item.name}
                   href={item.href}
-                  className={`relative transition-colors duration-200 ${
-                    isActive ? 'text-custom-olive' : 'text-gray-400 hover:text-custom-sage'
+                  whileHover={{ scale: 1.1, color: '#D6CE93' }}
+                  transition={{ duration: 0.2 }}
+                  className={`relative ${
+                    isActive ? 'text-custom-olive' : 'text-gray-400'
                   }`}
                 >
                   {item.name}
@@ -75,18 +87,61 @@ export default function Navbar() {
                       style={{ background: 'linear-gradient(to right, #A3A380, #D6CE93, #EFEBCE)' }}
                     />
                   )}
-                </a>
+                </motion.a>
               )
             })}
           </div>
 
-          <button className="md:hidden text-gray-400 hover:text-custom-olive">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
+          <button 
+            className="md:hidden text-gray-400 hover:text-custom-olive"
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            {menuOpen ? (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            )}
           </button>
         </div>
       </div>
+
+      {/* Mobile menu */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.25, ease: 'easeInOut' }}
+            className="md:hidden bg-dark-bg/95 backdrop-blur-md border-b border-gray-800"
+          >
+            <div className="px-4 py-4 space-y-2">
+              {navItems.map((item) => (
+                <motion.a
+                  key={item.name}
+                  href={item.href}
+                  onClick={() => setMenuOpen(false)}
+                  whileHover={{ x: 4, color: '#D6CE93' }}
+                  transition={{ duration: 0.15 }}
+                  className={`block py-2 ${
+                    activeSection === item.href.substring(1)
+                      ? 'text-custom-cream'
+                      : 'text-gray-300'
+                  }`}
+                >
+                  {item.name}
+                </motion.a>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.nav>
   )
 }
