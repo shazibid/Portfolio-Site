@@ -22,7 +22,7 @@ export const workExperience: WorkExperience[] = [
       'Developed and evaluated 12+ unsupervised ML models (K-Means, DBSCAN, HDBSCAN) across 50+ hyperparameter combinations, revealing <5% natural separability between turn behaviors due to heavy feature overlap',
       'Led a 4-fellow team, synthesizing 10+ analytic and geospatial visualizations and delivering data-driven insights and recommendations to Arity (Allstate) stakeholders.',
     ],
-    technologies: ['Python', 'Scikit-learn', 'Pandas', 'NumPy', 'ML Models'],
+    technologies: ['Python', 'Scikit-learn', 'Pandas', 'NumPy', 'ML Models', 'Team Leadership'],
     projectLink: 'https://github.com/shazibid/ARITY-BTT-PROJECT-1',
   },
   {
@@ -48,5 +48,17 @@ export const workExperience: WorkExperience[] = [
       'Recognized by management for efficiency and error-free execution, serving as trusted resource for complex cases',
     ],
     technologies: ['Technical Troubleshooting', 'Customer Relations'],
+  },
+  {
+    title: 'Mobile Expert',
+    company: 'T-Mobile',
+    location: 'Rancho Santa Margarita, CA',
+    period: 'July 2022 - October 2023',
+    description: [
+      'Provided expert advice and resolved technical issues, maintaining a high level of customer satisfaction',
+      'Trained and mentored new employees, adapting approaches to different learning styles while guiding them in making sound, customer-focused decisions',
+      'Managed inventory and store organization, optimizing product availability and presentation',
+    ],
+    technologies: ['Device Diagnostics & Troubleshooting', 'Customer Relations', 'Account & Service Resolution'],
   },
 ]
