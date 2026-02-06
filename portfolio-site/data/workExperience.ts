@@ -13,6 +13,18 @@ export interface WorkExperience {
 
 export const workExperience: WorkExperience[] = [
   {
+    title: 'Software Engineering Intern',
+    company: 'Aesthetic',
+    location: 'San Diego, CA (Remote)',
+    period: 'January 2026 - Current',
+    description: [
+      'Architected a serverless Gmail parsing pipeline using AWS Lambda and Gemini Vision to extract fashion product images from shopping emails, implementing pattern-based classification and heuristic scoring to reduce LLM API costs by ~95%.',
+      'Built an async product prefetch system with tiered Lambda concurrency that scrapes and caches product details (sizes, images, pricing) in the background, enabling instant load times in the iOS app.',
+      'Designed retailer-specific URL transformation logic for 10+ e-commerce platforms (Amazon, Shopify, eBay, etc.) to upgrade thumbnail images to full-resolution for improved ML model accuracy.',
+    ],
+    technologies: ['Node.js', 'Google Cloud', 'AWS',],
+  },
+  {
     title: 'Machine Learning Project Fellow',
     company: 'Arity',
     location: 'Dallas, TX (Remote)',
