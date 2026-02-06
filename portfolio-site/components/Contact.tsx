@@ -44,7 +44,7 @@ export default function Contact() {
           from_name: formData.name,
           from_email: formData.email,
           message: formData.message,
-          to_email: 'bidarian.s23@gmail.com',
+          to_email: 'shazi.bid23@gmail.com',
         }
       )
       setSubmitStatus('success')

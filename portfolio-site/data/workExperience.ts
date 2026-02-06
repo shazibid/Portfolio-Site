@@ -43,9 +43,9 @@ export const workExperience: WorkExperience[] = [
     location: 'NY (Remote)',
     period: 'May 2025 - Current',
     description: [
-      'Participant in 12-month program including Machine Learning coursework with Cornell faculty and experiential learning projects',
-      'Led collaborative labs and discussions with fellows and mentors, strengthening technical understanding',
-      'Coordinated technical direction for a 4-fellow engineering team, aligning model development and dataset engineering',
+      'Participant in 12-month long program including Machine Learning coursework with Cornell faculty, experiential learning projects, and mentorship from industry professionals',
+      'Completed hands-on labs and technical discussions covering unsupervised learning, evaluation metrics, and data preprocessing, strengthening applied ML foundations',
+      'Collaborated across fellows and mentors to translate ambiguous problem statements into concrete ML objectives, emphasizing communication between technical and non-technical stakeholders',
     ],
     technologies: ['Machine Learning', 'Python', 'Team Leadership'],
   },

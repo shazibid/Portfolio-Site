@@ -59,7 +59,7 @@ export default function WorkExperience() {
           </h2>
           <div className="w-24 h-1 mx-auto mt-4" style={{ background: 'linear-gradient(to right, #A3A380, #D6CE93, #EFEBCE)' }} />
           <p className="text-gray-400 mt-8 text-lg">
-            My professional journey in ML & AI
+            My professional journey in ML, AI and SWE
           </p>
         </motion.div>
         

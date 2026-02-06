@@ -2,9 +2,9 @@
 
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
-import { ArrowRight, Code, Brain, Sparkles } from 'lucide-react'
+import { ArrowRight, Code, Brain, Download } from 'lucide-react'
 
-const roles = ['ML Engineer', 'AI Researcher', 'Creative Coder', 'Data Scientist', 'Problem Solver']
+const roles = ['Software Engineer', 'ML Engineer', 'AI Researcher', 'Creative Coder', 'Data Scientist']
 
 export default function Hero() {
   const [currentRole, setCurrentRole] = useState(0)
@@ -142,9 +142,9 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.6 }}
             >
-              Building intelligent systems with machine learning and AI. 
-              Currently a ML Fellow at <span className="text-custom-olive">Cornell Tech</span> and 
-              working on exciting projects at <span className="text-custom-sage">Arity</span>.
+              Building intelligent systems with software engineering and AI.
+              Currently a Software Engineering Intern at <span className="text-custom-olive">Aesthetic</span> and
+              ML Fellow at <span className="text-custom-sage">Cornell Tech's Break Through Tech AI</span>.
             </motion.p>
             
             {/* CTA Buttons */}
@@ -175,6 +175,16 @@ export default function Hero() {
               >
                 Get In Touch
               </motion.a>
+              <motion.a
+                href="/resume.pdf"
+                download
+                className="px-8 py-4 border-2 border-gray-700 rounded-lg font-semibold hover:border-custom-sage hover:text-custom-sage transition-all flex items-center gap-2"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Download className="w-5 h-5" />
+                Resume
+              </motion.a>
             </motion.div>
             
             {/* Quick stats */}
@@ -185,10 +195,10 @@ export default function Hero() {
               transition={{ delay: 0.8, duration: 0.6 }}
             >
               {[
-                { value: '60K+', label: 'Data Nodes', color: 'text-custom-olive' },
+                { value: '~95%', label: 'LLM Cost Reduction', color: 'text-custom-olive' },
                 { value: '12+', label: 'ML Models', color: 'text-custom-sage' },
-                { value: '0.92', label: 'AUC Score', color: 'text-custom-cream' },
-              ].map((stat, i) => (
+                { value: '10+', label: 'Platforms Integrated', color: 'text-custom-cream' },
+              ].map((stat) => (
                 <div key={stat.label} className="text-center">
                   <div className={`text-3xl font-bold ${stat.color} mb-1`}>{stat.value}</div>
                   <div className="text-sm text-gray-500">{stat.label}</div>

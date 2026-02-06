@@ -37,19 +37,19 @@ export default function About() {
               <div className="absolute inset-0 rounded-2xl blur-3xl opacity-20" style={{ background: 'linear-gradient(to right, rgba(163, 163, 128, 0.3), rgba(214, 206, 147, 0.3))' }} />
               <div className="relative bg-dark-card rounded-2xl p-8 border border-gray-800 backdrop-blur-sm">
                 <p className="text-lg text-gray-300 leading-relaxed mb-4">
-                  I'm a <span className="text-custom-olive font-semibold">Software </span> and <span className="text-custom-olive font-semibold">Machine Learning Engineer</span>, and a
-                  Computer Science student at <span className="text-custom-olive font-semibold">UC San Diego</span>, passionate about building AI and web systems that make 
-                  a real impact. Currently, I'm a ML Fellow at <span className="text-custom-sage">Cornell Tech's Break Through Tech AI</span> program 
-                  where I have worked on exciting projects at <span className="text-custom-cream">Arity</span>, and recently won the <span className="text-custom-cream">Best Coast </span>
-                  hackathon with CareFi, a web service built to support your dermatological needs.
+                  I'm a <span className="text-custom-olive font-semibold">Software</span> and <span className="text-custom-olive font-semibold">Machine Learning Engineer</span>, and a
+                  Computer Science student at <span className="text-custom-olive font-semibold">UC San Diego</span>, passionate about building AI and web systems that make
+                  a real impact. Currently, I'm a Software Engineering Intern at <span className="text-custom-sage">Aesthetic</span>, building serverless
+                  pipelines with AWS Lambda and Gemini Vision, and a ML Fellow at <span className="text-custom-sage">Cornell Tech's Break Through Tech AI</span>.
                 </p>
                 <p className="text-lg text-gray-300 leading-relaxed mt-4">
-                  Outside of engineering, I’m a life-long artist and musician, which naturally shapes how I build software — 
+                  Previously, I worked at <span className="text-custom-cream">Arity</span> designing scalable data-cleaning pipelines over 60K+ telematics nodes
+                  and evaluating 12+ unsupervised ML models. I also won the <span className="text-custom-cream">Best Coast Hackathon</span> with CareFi,
+                  an AI dermatology web service powered by OpenAI Vision and YOLOv8.
+                </p>
+                <p className="text-lg text-gray-300 leading-relaxed mt-4">
+                  Outside of engineering, I'm a life-long artist and musician, which naturally shapes how I build software —
                   I love creating things that feel intuitive, expressive, and thoughtfully designed.
-                </p>
-                <p className="text-lg text-gray-300 leading-relaxed mt-4">
-                  I'm always excited to collaborate on projects that push the boundaries of what's possible 
-                  with machine learning, whether it's computer vision, NLP, or building production-ready ML systems.
                 </p>
               </div>
             </div>
@@ -70,17 +70,23 @@ export default function About() {
                 <div>
                   <div className="font-semibold text-gray-100">UC San Diego</div>
                   <div className="text-sm text-gray-400">B.S. Computer Science</div>
-                  <div className="text-xs text-custom-cream">Expected Dec 2027</div>
+                  <div className="text-xs text-custom-cream">GPA: 3.90/4.00 • Expected Dec 2027</div>
+                  <div className="text-xs text-gray-500 mt-1">Discrete Mathematics, Systems Programming and Software Tools</div>
                 </div>
                 <div className="border-t border-gray-800 pt-4">
                   <div className="font-semibold text-gray-100">Saddleback & IVC</div>
                   <div className="text-sm text-gray-400">A.S. Computer Science</div>
                   <div className="text-xs text-custom-sage">GPA: 3.81/4.00 • June 2025</div>
+                  <div className="text-xs text-gray-500 mt-1">Advanced Java, Data Structures & Algorithms in C++, Discrete Mathematics, Linear Algebra</div>
+                  <div className="flex flex-wrap gap-1.5 mt-2">
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-custom-olive/10 text-custom-olive border border-custom-olive/20">NSLS</span>
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-custom-sage/10 text-custom-sage border border-custom-sage/20">Phi Theta Kappa</span>
+                  </div>
                 </div>
                 <div className="border-t border-gray-800 pt-4">
                   <div className="font-semibold text-gray-100">Cornell University</div>
-                  <div className="text-sm text-gray-400">Break Through Tech AI</div>
-                  <div className="text-xs text-custom-rose">ML Foundations Certificate</div>
+                  <div className="text-sm text-gray-400">Break Through Tech AI • August 2025</div>
+                  <div className="text-xs text-custom-rose">Machine Learning Foundations Certificate</div>
                 </div>
               </div>
             </div>
