@@ -14,7 +14,7 @@ export const projects = [
     ink: '#ffffff',
     meta: 'track 01 · july 2026',
     stack: 'swift · swiftui · xcuitest · github actions',
-    body: 'a floating now-playing widget for macos. it shows what\'s playing in spotify or apple music and lets you skip and pause without switching apps. it lives in the menu bar or the dock, whichever you prefer, as one small borderless window that stays on top. it follows whichever app is playing and comes in four skins: a liquid glass pill, a spinning cd, a spinning vinyl record, and a click-wheel ipod.',
+    body: 'a floating now-playing widget for macos. it shows what\'s playing in spotify or apple music and lets you skip and pause without switching apps. it has no dock icon or menu bar item, just one small borderless window that stays on top of everything else (it minimizes to the dock as a live thumbnail). it follows whichever app is playing and comes in four skins: a liquid glass pill, a spinning cd, a spinning vinyl record, and a click-wheel ipod.',
     n1: 'spotify\'s applescript interface can\'t report a queue, so i wrote the oauth login (authorization code with pkce, loopback callback server, token store with refresh) and a typed web api client to power the ipod skin\'s "up next". apple music gets its queue out of the box.',
     n2: 'media control sits behind a protocol with an injectable fake: unit tests cover parsing, pkce, the oauth loopback server, token storage and queue matching without needing either app running. xcuitest smoke tests drive the real app, and ci gates every pr.'
   },
@@ -59,6 +59,7 @@ export const projects = [
   {
     title: 'arity',
     repo: 'https://github.com/shazibid/ARITY-BTT-PROJECT-1',
+    shot: 'arity.webp',
     sub: 'python · clustering · 2025',
     bg: '#f0ece3',
     ink: '#2a2740',
