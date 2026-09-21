@@ -1,0 +1,138 @@
+/* the plain "quick view": everything a skimmer needs, no 3D. Also the fallback
+   for portrait phones, no-WebGL browsers and keyboard/screen-reader visitors. */
+
+.rotate-plain,
+.welcome-skip {
+  background: none;
+  font: 12px Verdana, sans-serif;
+  color: var(--accent);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.rotate-plain { padding: 10px 14px; }
+
+.welcome-skip {
+  display: block;
+  margin: 12px auto 0;
+  padding: 6px 8px;
+}
+
+.quick-view {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: var(--bg);
+  color: var(--ink);
+  font: 14px/1.6 Verdana, Geneva, sans-serif;
+}
+
+.quick-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 16px max(16px, env(safe-area-inset-right)) 56px max(16px, env(safe-area-inset-left));
+}
+
+.quick-bar {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 10px 0;
+  background: var(--bg);
+}
+
+.quick-view h1 {
+  margin: 14px 0 2px;
+  font: 400 26px Silkscreen, monospace;
+}
+
+.quick-view h2 {
+  margin: 36px 0 12px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--ink);
+  font: 400 14px Silkscreen, monospace;
+  text-transform: lowercase;
+}
+
+.quick-role {
+  margin: 0;
+  font: 22px VT323, monospace;
+  color: var(--muted);
+}
+
+.quick-open {
+  margin: 8px 0 16px;
+  color: var(--accent);
+}
+
+.quick-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.quick-cta .link-btn-dark { color: #fff; }
+
+.quick-project {
+  margin: 0 0 18px;
+  padding: 14px 16px;
+  background: var(--paper);
+  border: 1px solid rgba(42, 39, 64, .3);
+  border-radius: 8px;
+  box-shadow: 4px 4px 0 rgba(42, 39, 64, .12);
+}
+
+.quick-project h3 {
+  margin: 0;
+  font: 400 16px Silkscreen, monospace;
+}
+
+.quick-meta {
+  margin: 2px 0 8px;
+  font: 18px VT323, monospace;
+  color: var(--muted);
+}
+
+.quick-project p { margin: 8px 0; }
+
+.quick-project .quick-note {
+  padding-left: 10px;
+  border-left: 3px solid var(--accent-pink);
+  font-size: 13px;
+}
+
+.quick-project .quick-note + .quick-note { border-left-color: var(--accent-teal); }
+
+.quick-shot {
+  display: block;
+  width: 100%;
+  margin: 8px 0;
+  border: 1px solid rgba(42, 39, 64, .3);
+  border-radius: 6px;
+}
+
+.quick-repo {
+  font: 400 10px Silkscreen, monospace;
+}
+
+.quick-private {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.quick-noscript {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  padding: 24px;
+  background: var(--bg);
+  color: var(--ink);
+  font: 14px/1.6 Verdana, sans-serif;
+}
+
+/* on a portrait phone the only way out is rotating, so hide the back button there */
+@media (orientation: portrait) and (max-width: 820px) {
+  .quick-bar { display: none; }
+}

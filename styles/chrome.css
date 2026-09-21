@@ -39,10 +39,46 @@
   color: var(--ink);
 }
 
-.mode-toggle {
+.top-actions {
   position: absolute;
   right: 20px;
   top: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.quick-links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px 4px;
+  background: rgba(255, 255, 255, .68);
+  border: 1px solid rgba(42, 39, 64, .34);
+  border-radius: 999px;
+  box-shadow: 0 12px 32px rgba(42, 39, 64, .16);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  animation: tipIn .45s ease-out both;
+}
+
+.quick-links a,
+.quick-links button {
+  padding: 6px 9px;
+  background: none;
+  border-radius: 999px;
+  font: 400 9px Silkscreen, monospace;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.quick-links a:hover,
+.quick-links button:hover {
+  background: rgba(233, 68, 127, .16);
+  text-decoration: none;
+}
+
+.mode-toggle {
   padding: 8px 12px;
   background: rgba(255, 255, 255, .68);
   border: 1px solid rgba(42, 39, 64, .34);
@@ -146,12 +182,12 @@
 /* short landscape viewports (phones on their side) */
 @media (max-height: 500px) {
   .topbar-badge,
-  .mode-toggle {
+  .top-actions {
     top: 10px;
   }
 
   .topbar-badge { left: max(12px, env(safe-area-inset-left)); }
-  .mode-toggle { right: max(12px, env(safe-area-inset-right)); }
+  .top-actions { right: max(12px, env(safe-area-inset-right)); }
 
   .hover-chip {
     top: 48px;

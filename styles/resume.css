@@ -129,6 +129,7 @@
 
 .resume-row-meta {
   color: var(--muted);
+  white-space: nowrap; /* keep date ranges on one line; the title wraps instead */
 }
 
 .resume-edu-sub {

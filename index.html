@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>shazi.exe — Shazi Bidarian</title>
 <meta name="description" content="Shazi Bidarian — software engineering portfolio, presented as an interactive desktop room.">
+<meta name="theme-color" content="#f2f1ee">
+<meta property="og:type" content="website">
+<meta property="og:title" content="shazi.exe — Shazi Bidarian">
+<meta property="og:description" content="UCSD CS student and software engineer. A portfolio built as a little desktop room: projects on CDs, resume on the desk, a cat that is just there.">
+<meta property="og:url" content="https://shazi-bidarian-portfolio.vercel.app/">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232a2740'/%3E%3Ccircle cx='16' cy='16' r='9' fill='%23e9447f'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%23f2f1ee'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./styles/base.css">
@@ -12,6 +20,7 @@
 <link rel="stylesheet" href="./styles/resume.css">
 <link rel="stylesheet" href="./styles/panel.css">
 <link rel="stylesheet" href="./styles/corkboard.css">
+<link rel="stylesheet" href="./styles/quick.css">
 </head>
 <body>
 <main class="shazi-room">
@@ -19,6 +28,7 @@
     <div class="rotate-phone" aria-hidden="true"></div>
     <div class="rotate-title">turn your phone sideways</div>
     <div class="rotate-sub">this room is best seen in landscape</div>
+    <button class="rotate-plain" type="button" data-open-quick>or just read the quick version</button>
   </div>
   <div class="room-stage">
     <div class="room-3d">
@@ -33,7 +43,15 @@
         <div class="badge-label">shazi.exe</div>
       </div>
 
-      <button class="mode-toggle" id="modeToggle" type="button">☾ night</button>
+      <div class="top-actions">
+        <nav class="quick-links" aria-label="quick links">
+          <button type="button" id="quickResume">resume</button>
+          <a href="https://github.com/shazibid" target="_blank" rel="noopener">github</a>
+          <a href="https://linkedin.com/in/shazi-bidarian" target="_blank" rel="noopener">linkedin</a>
+          <button type="button" data-open-quick>plain view</button>
+        </nav>
+        <button class="mode-toggle" id="modeToggle" type="button">☾ night</button>
+      </div>
 
       <button class="folder-tab" id="folderTab" type="button" aria-label="open help">
         <span class="folder-tab-icon"></span>
@@ -77,7 +95,7 @@
       <div class="resume-window">
         <div class="resume-titlebar">
           <div class="resume-filename">shazi-bidarian-swe.pdf</div>
-          <div class="resume-filesize">1 page · 96 kb</div>
+          <div class="resume-filesize" id="resumeSize">1 page</div>
           <div class="spacer"></div>
           <a class="resume-download-btn" href="./uploads/Shazi Bidarian Resume - SWE Intern.pdf">download</a>
           <button class="resume-close-btn" id="resumeCloseBtn" type="button">×</button>
@@ -132,9 +150,9 @@
             <div class="resume-section">
               <div class="resume-section-title">PROJECTS</div>
               <div class="resume-projects">
-                <b>Miniplayer</b> — macOS now-playing widget in Swift/SwiftUI; hand-written Spotify OAuth, 58 unit tests + 3 XCUITest smoke tests in CI.<br>
-                <b>SE-Sitrep</b> — Agile team manager, 10-person team, Class Project Winner; Postgres schema/RLS and modular frontend.<br>
-                <b>CareFi</b> — AI dermatology web service, Best Coast Hackathon Winner; three-angle photo workflow with duplicate detection.
+                <b>Miniplayer</b> — macOS now-playing widget in Swift/SwiftUI; hand-written Spotify OAuth, 58 unit tests + 3 XCUITest smoke tests in CI. <a href="https://github.com/shazibid/miniplayer" target="_blank" rel="noopener">GitHub</a><br>
+                <b>SE-Sitrep</b> — Agile team manager, 10-person team, Class Project Winner; Postgres schema/RLS and modular frontend. <a href="https://github.com/cse110-sp26-group13/CSE-110-SE-SitRep" target="_blank" rel="noopener">GitHub</a><br>
+                <b>CareFi</b> — AI dermatology web service, Best Coast Hackathon Winner; three-angle photo workflow with duplicate detection. <a href="https://github.com/jonathanle17/CareFi/tree/main/carefi" target="_blank" rel="noopener">GitHub</a>
               </div>
             </div>
 
@@ -144,7 +162,7 @@
                 <b>Languages:</b> Python, C++, C, Java, TypeScript, JavaScript, SQL, Swift<br>
                 <b>Frameworks &amp; Web:</b> React, React Native/Expo, Next.js, Node.js, SwiftUI, HTML, CSS, Tailwind<br>
                 <b>Cloud, Data &amp; Systems:</b> AWS (Lambda, S3), Supabase/Postgres, REST APIs, OAuth 2.0, POSIX/Unix, GitHub API<br>
-                <b>AI &amp; ML:</b> Gemini Vision, Scikit-learn, Pandas, NumPy<br>
+                <b>AI &amp; ML:</b> Gemini Vision, Scikit-learn, Pandas, NumPy, Claude Code/Claude Design<br>
                 <b>Testing &amp; Tools:</b> Vitest, Playwright, XCUITest, ESLint, Git, GitHub Actions, CI/CD<br>
                 <b>Certifications:</b> Break Through Tech AI · Cornell Tech: Machine Learning Foundations (Aug 2025)
               </div>
@@ -201,13 +219,14 @@
         <section class="panel-section" id="panelWork" hidden>
           <div class="section-eyebrow" id="workMeta"></div>
           <div class="section-title" id="workTitle"></div>
+          <img class="work-shot" id="workShot" alt="" hidden>
           <div class="work-stack" id="workStack"></div>
           <div class="work-body" id="workBody"></div>
           <div class="work-note work-note-pink" id="workNote1"></div>
           <div class="work-note work-note-teal" id="workNote2"></div>
           <div class="work-links">
-            <a class="link-btn link-btn-dark" href="https://github.com/shazibid">github</a>
-            <a class="link-btn link-btn-outline" href="#" id="workCta">case study →</a>
+            <a class="link-btn link-btn-dark" id="workRepo" href="https://github.com/shazibid" target="_blank" rel="noopener">code on github ↗</a>
+            <span class="work-private" id="workPrivate" hidden>code is private (company work) · happy to walk through it</span>
           </div>
           <div class="disc-nav">
             <button class="disc-nav-btn" id="prevDiscBtn" type="button">prev</button>
@@ -221,11 +240,11 @@
           <div class="section-title">about me</div>
           <p class="about-text">cs student at ucsd, landed in tech after my failed art career (jk i was lowkey poppin). i thought, what if i brought my art to life?</p>
           <p class="about-text">my favorite projects are the ones that let me take full control over the creative and applicative directions. working at aesthetic, i was in charge of the full user shopping experience ui, and now i can confidently manage designs/redesigns from top to bottom, front to back. i am unstoppable.</p>
-          <p class="about-text">before i transferred to ucsd, i joined break through tech's 2025-2026 cohort and fell in love with machine learning and data science. now i am working on some new projects where i can incorperate smart ai into my fun and interactive software. keep an eye out for new interesting projects popping up on my github. if you see anything you like and have fun with, please lmk!!</p>
+          <p class="about-text">before i transferred to ucsd, i joined break through tech's 2025-2026 cohort and fell in love with machine learning and data science. now i am working on some new projects where i can incorporate smart ai into my fun and interactive software. keep an eye out for new interesting projects popping up on my github. if you see anything you like and have fun with, please lmk!!</p>
           <div class="cork-grid" id="corkGrid"></div>
           <div class="tag-row">
             <span class="tag-pill">ucsd cs '27</span>
-            <span class="tag-pill">gpa 3.7</span>
+            <span class="tag-pill">gpa 3.6</span>
             <span class="tag-pill">break through tech ai</span>
             <span class="tag-pill">san diego</span>
           </div>
@@ -235,7 +254,7 @@
         <section class="panel-section" id="panelContact" hidden>
           <div class="section-eyebrow">the mail tray</div>
           <div class="section-title">say hi</div>
-          <p class="contact-desc">open to summer 2027 swe internships and new grad roles (my grad date is anything you want it to be, june for new grad or dec for intern, im flexible), and always up for talking about native apps, weird pipelines, or which apple product is the best (ipad, duh).</p>
+          <p class="contact-desc">open to summer 2027 swe internships and new grad roles. my grad date is flexible, so june for new grad or dec for intern both work. always up for talking about native apps, weird pipelines, or which apple product is the best (ipad, duh).</p>
           <div class="contact-list">
             <a class="contact-row" href="mailto:shazi.bid23@gmail.com">email<span class="contact-value">shazi.bid23@gmail.com</span></a>
             <a class="contact-row" href="https://github.com/shazibid">github<span class="contact-value">@shazibid</span></a>
@@ -277,9 +296,48 @@
       <p class="welcome-text">this is my portfolio, built as a little room. there's no nav bar, so click around: the discs for projects, the corkboard for about me, the papers for my resume, the mail tray to say hi.</p>
       <p class="welcome-text welcome-sub">turn the sound on for lofi. the cat is just there.</p>
       <button class="welcome-btn" id="welcomeClose" type="button">let me in</button>
+      <button class="welcome-skip" type="button" data-open-quick>in a hurry? read the quick version</button>
     </div>
   </div>
 </div>
+
+<div class="quick-view" id="quickView" role="dialog" aria-modal="true" aria-labelledby="quickName" hidden>
+  <div class="quick-inner">
+    <div class="quick-bar">
+      <button class="btn btn-outline" id="quickClose" type="button">◀ back to the room</button>
+    </div>
+    <header class="quick-head">
+      <h1 id="quickName">Shazi Bidarian</h1>
+      <p class="quick-role">CS at UCSD · software engineering · San Diego, CA</p>
+      <p class="quick-open">open to summer 2027 SWE internships and new grad roles</p>
+      <div class="quick-cta">
+        <a class="link-btn link-btn-dark" href="./uploads/Shazi Bidarian Resume - SWE Intern.pdf">resume (pdf)</a>
+        <a class="link-btn link-btn-outline" href="mailto:shazi.bid23@gmail.com">email</a>
+        <a class="link-btn link-btn-outline" href="https://github.com/shazibid" target="_blank" rel="noopener">github</a>
+        <a class="link-btn link-btn-outline" href="https://linkedin.com/in/shazi-bidarian" target="_blank" rel="noopener">linkedin</a>
+      </div>
+    </header>
+    <section aria-labelledby="quickWorkTitle">
+      <h2 id="quickWorkTitle">work</h2>
+      <div id="quickProjects"></div>
+    </section>
+    <section aria-labelledby="quickAboutTitle">
+      <h2 id="quickAboutTitle">about</h2>
+      <div id="quickAbout"></div>
+    </section>
+  </div>
+</div>
+
+<noscript>
+  <div class="quick-noscript">
+    <h1>Shazi Bidarian</h1>
+    <p>CS at UCSD, software engineering. This site is an interactive 3D room and needs JavaScript. Meanwhile:
+    <a href="./uploads/Shazi Bidarian Resume - SWE Intern.pdf">resume (pdf)</a> ·
+    <a href="mailto:shazi.bid23@gmail.com">email</a> ·
+    <a href="https://github.com/shazibid">github</a> ·
+    <a href="https://linkedin.com/in/shazi-bidarian">linkedin</a></p>
+  </div>
+</noscript>
 
 <div class="photo-modal" id="photoModal" hidden>
   <figure class="photo-card" role="dialog" aria-modal="true" aria-labelledby="photoCaption">

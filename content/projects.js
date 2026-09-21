@@ -1,9 +1,12 @@
 // Single source of truth for the 5 project "discs" — both the 3D case art
 // in the rack (bg/ink) and the case-study text in the side panel read from
 // this list, in this order. Add/reorder/edit a project here only.
+// repo: public code link, or null when the code is private (the panel then says so).
+// shot: optional screenshot/GIF filename in assets/projects/, shown at the top of the panel.
 export const projects = [
   {
     title: 'miniplayer',
+    repo: 'https://github.com/shazibid/miniplayer',
     sub: 'swift · swiftui · 2026',
     bg: '#e9447f',
     ink: '#ffffff',
@@ -15,6 +18,7 @@ export const projects = [
   },
   {
     title: 'se-sitrep',
+    repo: 'https://github.com/cse110-sp26-group13/CSE-110-SE-SitRep',
     sub: 'javascript · supabase · 2026',
     bg: '#2ba7b5',
     ink: '#06232a',
@@ -26,6 +30,7 @@ export const projects = [
   },
   {
     title: 'aesthetic',
+    repo: null,
     sub: 'aws · gemini vision · 2026',
     bg: '#2a2740',
     ink: '#f5c9e4',
@@ -37,17 +42,19 @@ export const projects = [
   },
   {
     title: 'carefi',
+    repo: 'https://github.com/jonathanle17/CareFi/tree/main/carefi',
     sub: 'next.js · typescript · 2025',
     bg: '#f0b942',
     ink: '#3a2c07',
     meta: 'track 04 · november 2025 · hackathon winner',
-    stack: 'next.js · typescript · tailwind',
-    body: 'an ai dermatology web service that won best coast hackathon. i built the core input flow: a three-angle facial photo workflow with guided reference imagery, drag-and-drop uploads, previews, and client-side validation, so the model gets usable photos on the first try.',
-    n1: 'upload state that survives real users: duplicate detection across batches, rejected files never generate previews, and removed files can be picked again.',
-    n2: 'checkout and onboarding: payment formatting, four-field validation, bidirectional budget checks, and progression gating so nobody skips ahead with bad data.'
+    stack: 'next.js · typescript · tailwind · supabase',
+    body: 'an ai dermatology assistant that turns a skin questionnaire and three face photos into a personalized routine with budget-aware product swaps. built with a 4-person team; won best coast hackathon. i was the #2 contributor and owned the photo-upload pipeline end to end.',
+    n1: 'the upload flow: guided three-angle photos, drag-and-drop, cross-batch duplicate detection, and file state that survives real users (rejected files never preview, removed ones can be re-picked), backed by a supabase storage layer with bucket policies and an upload api route.',
+    n2: 'also built checkout and onboarding (payment formatting, four-field validation, bidirectional budget checks, progression gating) and the account settings page with display-name and password-change endpoints.'
   },
   {
     title: 'arity',
+    repo: 'https://github.com/shazibid/ARITY-BTT-PROJECT-1',
     sub: 'python · clustering · 2025',
     bg: '#f0ece3',
     ink: '#2a2740',

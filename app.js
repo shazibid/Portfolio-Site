@@ -34,6 +34,9 @@ const el = {
   workMeta: document.getElementById('workMeta'),
   workTitle: document.getElementById('workTitle'),
   workStack: document.getElementById('workStack'),
+  workShot: document.getElementById('workShot'),
+  workRepo: document.getElementById('workRepo'),
+  workPrivate: document.getElementById('workPrivate'),
   workBody: document.getElementById('workBody'),
   workNote1: document.getElementById('workNote1'),
   workNote2: document.getElementById('workNote2'),
@@ -223,6 +226,14 @@ function render() {
     el.workMeta.textContent = project.meta;
     el.workTitle.textContent = project.title;
     el.workStack.textContent = project.stack;
+    el.workShot.hidden = !project.shot;
+    if (project.shot) {
+      el.workShot.src = `./assets/projects/${project.shot}`;
+      el.workShot.alt = project.title + ' screenshot';
+    }
+    el.workRepo.hidden = !project.repo;
+    if (project.repo) el.workRepo.href = project.repo;
+    el.workPrivate.hidden = !!project.repo;
     el.workBody.textContent = project.body;
     el.workNote1.textContent = project.n1;
     el.workNote2.textContent = project.n2;
@@ -316,3 +327,90 @@ if (!welcomed) welcomeModal.hidden = false;
 welcomeClose.addEventListener('click', closeWelcome);
 welcomeModal.addEventListener('click', (e) => { if (e.target === welcomeModal) closeWelcome(); });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !welcomeModal.hidden) closeWelcome(); });
+
+// resume size comes from the file itself so the title bar can't go stale
+const resumeSize = document.getElementById('resumeSize');
+fetch(document.querySelector('.resume-download-btn').href, { method: 'HEAD' })
+  .then((r) => {
+    const bytes = Number(r.headers.get('content-length'));
+    if (bytes) resumeSize.textContent = '1 page · ' + Math.round(bytes / 1024) + ' kb';
+  })
+  .catch(() => { /* offline: keep the plain "1 page" */ });
+
+// resume from the quick links goes through the room like the papers do
+document.getElementById('quickResume').addEventListener('click', () => {
+  if (room.selectZone && !room.failed) room.selectZone('resume');
+  else window.open(document.querySelector('.resume-download-btn').href, '_blank');
+});
+
+// quick view: a plain, no-3D version of the content built from the same data as the panels.
+// It's the way in on portrait phones, the fallback when the room can't render, and the
+// keyboard/screen-reader path.
+const quickView = document.getElementById('quickView');
+const quickClose = document.getElementById('quickClose');
+let quickReturnFocus = null;
+
+function textEl(tag, className, text) {
+  const n = document.createElement(tag);
+  if (className) n.className = className;
+  n.textContent = text;
+  return n;
+}
+
+function buildQuickView() {
+  const list = document.getElementById('quickProjects');
+  projects.forEach((p) => {
+    const card = document.createElement('article');
+    card.className = 'quick-project';
+    card.append(textEl('h3', '', p.title), textEl('div', 'quick-meta', p.meta + ' · ' + p.stack));
+    if (p.shot) {
+      const img = document.createElement('img');
+      img.className = 'quick-shot';
+      img.src = `./assets/projects/${p.shot}`;
+      img.alt = p.title + ' screenshot';
+      img.loading = 'lazy';
+      card.append(img);
+    }
+    card.append(textEl('p', '', p.body), textEl('p', 'quick-note', p.n1), textEl('p', 'quick-note', p.n2));
+    if (p.repo) {
+      const a = textEl('a', 'quick-repo', 'code on github ↗');
+      a.href = p.repo; a.target = '_blank'; a.rel = 'noopener';
+      card.append(a);
+    } else {
+      card.append(textEl('span', 'quick-private', 'code is private (company work) · happy to walk through it'));
+    }
+    list.append(card);
+  });
+  const about = document.getElementById('quickAbout');
+  document.querySelectorAll('#panelAbout .about-text').forEach((n) => about.append(textEl('p', '', n.textContent)));
+}
+
+function openQuick() {
+  if (!document.getElementById('quickProjects').childElementCount) buildQuickView();
+  closeWelcome();
+  quickReturnFocus = document.activeElement;
+  quickView.hidden = false;
+  quickView.scrollTop = 0;
+  quickClose.hidden = !!room.failed;
+  (room.failed ? quickView : quickClose).focus({ preventScroll: true });
+}
+
+function closeQuick() {
+  if (room.failed) return; // nothing to go back to
+  quickView.hidden = true;
+  if (quickReturnFocus && quickReturnFocus.focus) quickReturnFocus.focus();
+}
+
+quickView.tabIndex = -1;
+document.querySelectorAll('[data-open-quick]').forEach((b) => b.addEventListener('click', openQuick));
+quickClose.addEventListener('click', closeQuick);
+room.addEventListener('roomfail', openQuick);
+if (room.failed) openQuick();
+
+// Escape backs out one level: quick view, then (if no modal is up) the panel/resume/rack
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape') return;
+  if (!quickView.hidden) { closeQuick(); return; }
+  if (!photoModal.hidden || !welcomeModal.hidden) return; // those handle their own Escape
+  if (state.zone !== '' || state.navOpen) back();
+});
