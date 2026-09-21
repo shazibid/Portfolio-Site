@@ -56,6 +56,5 @@ export const vineSpots = [
 // Photobooth strips: drop images into assets/photos/ (e.g. strip-1.jpg). `w` is the strip's
 // width; height follows the image. A slot whose file doesn't exist yet stays empty.
 export const stripSpots = [
-  { file: 'strip-1.jpg', x: 0.12, y: -0.42, rot:  0.05, w: 0.3 },
-  { file: 'sketches.jpg', x: 0.33, y: -1.0, rot: 0.05, w: 0.38 }
+  { file: 'strip-1.jpg', x: 0.12, y: -0.42, rot:  0.05, w: 0.3 }
 ];
