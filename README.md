@@ -43,7 +43,7 @@ is unavailable) shows the same content as a normal scrolling page.
   - `audio.js` — the synthesized "meow"
 - `vendor/three.min.js` — three r150, vendored so the room doesn't depend on a CDN
 - `uploads/` — resume PDF served for download
-- `assets/og.jpg` — the link-preview image (a render of the room)
+- `assets/og-shazi-dev.jpg` — the link-preview image (a render of the room)
 
 Raw source photos/stickers/screenshots live in `assets/*/originals/` (git-ignored);
 the site only uses the optimized copies one level up (JPEG ≤1280px, WebP stickers).
