@@ -144,6 +144,10 @@
 .np-toggle {
   width: 32px;
   height: 32px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   flex: none;
   border: 1px solid var(--ink);
   border-radius: 50%;
@@ -387,6 +391,10 @@
 .play-btn {
   width: 38px;
   height: 38px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   flex: none;
   border: 1px solid var(--ink);
   border-radius: 50%;
@@ -449,4 +457,13 @@
 
 .progress-meta a {
   color: inherit;
+}
+
+/* drawn play/pause icons (same shape on every platform) */
+.np-toggle svg,
+.play-btn svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+  display: block;
 }

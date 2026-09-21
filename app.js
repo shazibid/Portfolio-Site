@@ -58,12 +58,16 @@ const el = {
   progressFill: document.getElementById('progressFill')
 };
 
+// play/pause icons are drawn, not typed: iOS renders the ▶ character as a colour emoji
+const ICON_PLAY = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5v9l7.5-4.5z"/></svg>';
+const ICON_PAUSE = '<svg viewBox="0 0 12 12" aria-hidden="true"><rect x="2.5" y="1.5" width="2.6" height="9" rx=".5"/><rect x="6.9" y="1.5" width="2.6" height="9" rx=".5"/></svg>';
+
 // background lo-fi loop: starts on the first click anywhere (browsers block
 // autoplay) unless the visitor turned it off with the dock's toggle
 const lofi = createLofi();
 let lofiMuted = false;
 function syncMusicBtn() {
-  el.dockToggle.textContent = lofi.on ? '❚❚' : '▶';
+  el.dockToggle.innerHTML = lofi.on ? ICON_PAUSE : ICON_PLAY;
   el.dockVinyl.classList.toggle('spinning', lofi.on);
   if (room.setLofi) room.setLofi(lofi.on);
 }
@@ -274,7 +278,7 @@ function render() {
   }
   el.previewVolume.hidden = !track; // the volume slider only drives song previews
   lofi.duck(!!(playing && track));
-  el.playBtn.textContent = playing ? '❚❚' : '▶';
+  el.playBtn.innerHTML = playing ? ICON_PAUSE : ICON_PLAY;
 }
 
 render();
