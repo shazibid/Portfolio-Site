@@ -2,7 +2,7 @@
 // in the rack (bg/ink) and the case-study text in the side panel read from
 // this list, in this order. Add/reorder/edit a project here only.
 // repo: public code link, or null when the code is private (the panel then says so).
-// live: optional deployed-site link (adds a "live demo" button).
+// live: optional deployed-site or demo-video link (adds a "live demo" button; liveLabel renames it).
 // shot: optional screenshot / animated WebP filename in assets/projects/, shown at the top of the panel.
 export const projects = [
   {
@@ -47,6 +47,8 @@ export const projects = [
   {
     title: 'carefi',
     repo: 'https://github.com/jonathanle17/CareFi/tree/main/carefi',
+    live: 'https://www.youtube.com/watch?v=9bRPwL0-zkQ',
+    liveLabel: 'watch demo',
     sub: 'next.js · typescript · 2025',
     bg: '#f0b942',
     ink: '#3a2c07',

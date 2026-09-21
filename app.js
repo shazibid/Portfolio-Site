@@ -241,7 +241,10 @@ function render() {
       el.workShot.alt = project.title + ' screenshot';
     }
     el.workLive.hidden = !project.live;
-    if (project.live) el.workLive.href = project.live;
+    if (project.live) {
+      el.workLive.href = project.live;
+      el.workLive.textContent = (project.liveLabel || 'live demo') + ' ↗';
+    }
     el.workRepo.hidden = !project.repo;
     if (project.repo) el.workRepo.href = project.repo;
     el.workPrivate.hidden = !!project.repo;
@@ -381,7 +384,7 @@ function buildQuickView() {
     }
     card.append(textEl('p', '', p.body), textEl('p', 'quick-note', p.n1), textEl('p', 'quick-note', p.n2));
     if (p.live) {
-      const l = textEl('a', 'quick-repo', 'live demo ↗');
+      const l = textEl('a', 'quick-repo', (p.liveLabel || 'live demo') + ' ↗');
       l.href = p.live; l.target = '_blank'; l.rel = 'noopener';
       card.append(l);
     }
