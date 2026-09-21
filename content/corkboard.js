@@ -20,8 +20,8 @@ export const albumSpots = [
   { file: 'album-1.jpg', x: -0.6,  y:  0.36, rot: -0.1,  size: 0.3 },
   { file: 'album-2.jpg', x: -1.0,  y: -0.52, rot: -0.06, size: 0.34 },
   { file: 'album-3.jpg', x:  0.98, y:  0.3,  rot:  0.07, size: 0.32 },
-  { file: 'album-4.jpg', x:  1.7,  y: -0.72, rot: -0.09, size: 0.3 },
-  { file: 'album-5.jpg', x:  1.38, y: -0.66, rot:  0.1,  size: 0.3 }
+  { file: 'album-4.jpg', x: -1.66, y: -0.04, rot: -0.09, size: 0.3 },
+  { file: 'album-5.jpg', x: -1.42, y: -0.32, rot:  0.1,  size: 0.3 }
 ];
 
 // The nyc postcard: a goal, pinned low on the board (clear of the lamp, lower right).
