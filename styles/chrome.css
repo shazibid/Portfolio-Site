@@ -18,6 +18,22 @@
   animation: tipIn .45s ease-out both;
 }
 
+.traffic-lights {
+  display: flex;
+  gap: 5px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid rgba(42, 39, 64, .35);
+}
+
+.dot-pink { background: #ff6fb5; }
+.dot-yellow { background: #ffd76f; }
+.dot-teal { background: #55d3e0; }
+
 .badge-label {
   font: 400 11px Silkscreen, monospace;
   color: var(--ink);
