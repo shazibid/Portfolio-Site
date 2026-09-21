@@ -2,7 +2,7 @@
   --ink: #2a2740;
   --ink-soft: #3b3757;
   --muted: #5a5578;
-  --muted-2: #8a8ba0;
+  --muted-2: #6b6a86;
   --accent: #b5257c;
   --accent-pink: #e9447f;
   --accent-teal: #2ba7b5;
@@ -166,7 +166,7 @@ button {
   border: 1px solid rgba(42, 39, 64, .75);
   border-radius: 999px;
   box-shadow: 0 14px 32px rgba(42, 39, 64, .18);
-  font: 400 9px Silkscreen, monospace;
+  font: 400 12px Silkscreen, monospace;
   color: #fff;
 }
 
@@ -175,7 +175,7 @@ button {
   background: #fff;
   border: 1px solid var(--ink);
   border-radius: 4px;
-  font: 400 9px Silkscreen, monospace;
+  font: 400 12px Silkscreen, monospace;
   color: var(--ink);
 }
 

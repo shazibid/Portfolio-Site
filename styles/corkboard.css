@@ -51,7 +51,7 @@
 
 .cork-photo-caption {
   margin-top: 7px;
-  font: 11px/1.4 Verdana, sans-serif;
+  font: 13px/1.4 Verdana, sans-serif;
 }
 
 .cork-photo-more {
@@ -102,7 +102,7 @@
 
 .photo-story {
   margin: 8px 0 0;
-  font: 13px/1.7 Verdana, sans-serif;
+  font: 14.5px/1.7 Verdana, sans-serif;
   color: var(--ink-soft);
 }
 
@@ -159,7 +159,7 @@
 }
 
 .welcome-file {
-  font: 400 9px Silkscreen, monospace;
+  font: 400 12px Silkscreen, monospace;
   color: #f5c9e4;
 }
 
@@ -174,12 +174,12 @@
 
 .welcome-text {
   margin: 10px 0 0;
-  font: 13px/1.7 Verdana, sans-serif;
+  font: 14.5px/1.7 Verdana, sans-serif;
   color: var(--ink-soft);
 }
 
 .welcome-sub {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--muted-2);
 }
 
@@ -189,7 +189,7 @@
   padding: 9px 16px;
   background: var(--ink);
   border-radius: 5px;
-  font: 400 9px Silkscreen, monospace;
+  font: 400 12px Silkscreen, monospace;
   color: #fff;
   cursor: pointer;
 }

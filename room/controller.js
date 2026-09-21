@@ -86,7 +86,11 @@ export function attachController(host, T, refs) {
     }
     if (sel.zone && sel.zone !== 'rack') { host.backOne(); return; }
     if (sel.zone === 'rack' && !hoverZone) { host.backOne(); return; }
-    if (hoverZone === 'butterfly') { flyUntil = t + 3.4; return; }
+    if (hoverZone === 'butterfly') {
+      flyUntil = t + 3.4;
+      host.dispatchEvent(new CustomEvent('butterflyshoo', { bubbles: true }));
+      return;
+    }
     if (hoverZone === 'cat') {
       meow();
       host.dispatchEvent(new CustomEvent('catmeow', { bubbles: true }));
@@ -113,31 +117,33 @@ export function attachController(host, T, refs) {
     mode = m === 'night' ? 'night' : 'day';
     const night = mode === 'night';
     // night: no sun (its shadows pointed away from the lamp), minimal fill, lamp does the work
-    sun.intensity = night ? 0 : 2.05;
+    sun.intensity = night ? 0 : 1.7;
+    sun.color.set(0xffe2b0); // warm low-ish sun; the golden tint keeps colors saturated instead of blowing out
     sun.castShadow = !night;
     lampLight.castShadow = night;
     scene.traverse((o) => {
       if (!o.material) return;
       (Array.isArray(o.material) ? o.material : [o.material]).forEach((m) => { m.needsUpdate = true; });
     });
-    amb.intensity = night ? 0.05 : 0.22;
-    hemi.intensity = night ? 0.09 : 0.3;
+    amb.intensity = night ? 0.05 : 0.16;
+    hemi.intensity = night ? 0.09 : 0.32;
     lampLight.intensity = night ? 3.6 : 1.4;
     lampLight.distance = night ? 8 : 9;
     pool.intensity = 0; // the old detached spotlight lit the floor from nowhere; the lamp's point light replaces it
     glow.material.opacity = night ? 0.6 : 0;
     shadeMat.emissiveIntensity = night ? 0.85 : 0;
     bulb.material.color.set(night ? 0xfff2d6 : 0xf3ead8);
-    renderer.toneMappingExposure = night ? 1.25 : 0.9;
-    scene.background.set(night ? 0x241f33 : 0xc3b5d6);
-    wallMat.color.set(night ? 0x453d5c : 0xcfc0e0);
-    floorMat.color.set(night ? 0x6a5040 : 0xc99e6f);
-    woodMat.color.set(night ? 0x8a6543 : 0xc08848);
+    renderer.toneMappingExposure = night ? 1.25 : 0.78;
+    scene.background.set(night ? 0x241f33 : 0xb9a6d2);
+    wallMat.color.set(night ? 0x453d5c : 0xc7b3e0);
+    floorMat.color.set(night ? 0x6a5040 : 0xc8955e);
+    woodMat.color.set(night ? 0x8a6543 : 0xbb7d38);
     pane.material.map = night ? nightTex : dayTex;
     pane.material.needsUpdate = true;
     lapScreen.material.color.set(night ? 0xb4bccf : 0xffffff);
   };
   host.getMode = () => mode;
+  host.setMode('day'); // apply the day look on load too, not only after a toggle
 
   // hover-pick the room (or the rack's cases) under the pointer
   function updateHover() {
@@ -178,6 +184,8 @@ export function attachController(host, T, refs) {
     }
     return (spanCache[key] = (hi - lo) / 2); // NDC spans 2, so this is a fraction of the frame width
   }
+  const camLocal = new T.Vector3();
+  cases.forEach((c) => { c.rotation.order = 'YXZ'; }); // yaw about the vertical, then pitch, like a look-at
   let raf, t = 0, intro = 1;
   const camPos = new T.Vector3(1.0, 5.6, 26);
   const camLook = CAM.wide.look.clone();
@@ -197,6 +205,7 @@ export function attachController(host, T, refs) {
       el.style.cursor = ti >= 0 ? 'pointer' : 'default';
     }
 
+    const rack = cases[0].parent;
     const rackOpen = sel.zone === 'rack' ? 1 : 0;
     cases.forEach((c, i) => {
       const d = c.userData;
@@ -209,15 +218,25 @@ export function attachController(host, T, refs) {
       // depth (left in front, same order as the closed rack) or the covers z-fight
       const openX = (i - 2) * 1.02, openZ = 0.34 - i * 0.03;
       c.position.x = baseX + (openX - baseX) * d.open;
-      c.position.z = baseZ + (openZ - baseZ) * d.open + d.lift * 0.6;
-      c.position.y = d.baseY + d.lift * 0.3 + d.open * 0.1;
-      // a lifted case is drawn out toward the viewer and tipped up to face them, as if held
-      // in hand. It only moves forward and never sideways, so it can't cut through a neighbour
-      c.rotation.x = d.baseRotX * (1 - d.open * 0.72) + d.lift * 0.2;
-      c.rotation.y = 0;
+      c.position.z = baseZ + (openZ - baseZ) * d.open + d.lift * 1.5;
+      c.position.y = d.baseY + d.lift * 0.45 + d.open * 0.1;
+      // a lifted case is drawn out toward the viewer and turned to face the camera head-on, as if
+      // held in hand: yaw and pitch both aim its front at the camera (the rack itself is yawed)
+      const restRotX = d.baseRotX * (1 - d.open * 0.72);
+      if (d.lift > 0.001) {
+        rack.updateMatrixWorld();
+        camLocal.copy(camera.position);
+        rack.worldToLocal(camLocal);
+        const dx = camLocal.x - c.position.x, dz = camLocal.z - c.position.z;
+        const yaw = Math.atan2(dx, dz);
+        const pitch = -Math.atan2(camLocal.y - c.position.y, Math.hypot(dx, dz));
+        c.rotation.x = restRotX + (pitch - restRotX) * d.lift;
+        c.rotation.y = yaw * d.lift;
+      } else { c.rotation.x = restRotX; c.rotation.y = 0; }
+      c.children[0].material[4].emissiveIntensity = d.lift * 0.45;
 
       const h = caseHits[i];
-      h.position.set(c.position.x, d.baseY + d.open * 0.1, c.position.z);
+      h.position.set(c.position.x, d.baseY + d.open * 0.1, c.position.z - d.lift * 1.5);
       h.rotation.set(d.baseRotX * (1 - d.open * 0.72), 0, 0);
     });
 

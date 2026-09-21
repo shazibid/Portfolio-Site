@@ -92,7 +92,7 @@
 
 .folder-tab-label {
   writing-mode: vertical-rl;
-  font: 400 10px Silkscreen, monospace;
+  font: 400 12px Silkscreen, monospace;
   color: var(--ink);
 }
 
@@ -105,7 +105,7 @@
 }
 
 .panel-kicker {
-  font: 400 10px Silkscreen, monospace;
+  font: 400 12px Silkscreen, monospace;
   color: var(--accent);
 }
 
@@ -116,7 +116,7 @@
 }
 
 .section-eyebrow {
-  font: 400 10px Silkscreen, monospace;
+  font: 400 12px Silkscreen, monospace;
   color: var(--muted-2);
 }
 
@@ -152,7 +152,7 @@
   border: 1px solid var(--ink);
   border-radius: 50%;
   background: #fff;
-  font: 12px Verdana, sans-serif;
+  font: 13px Verdana, sans-serif;
   color: var(--ink);
   cursor: pointer;
 }
@@ -164,7 +164,7 @@
 
 .idle-desc {
   margin: 12px 0 20px;
-  font: 13px/1.8 Verdana, sans-serif;
+  font: 14.5px/1.8 Verdana, sans-serif;
   color: var(--muted);
 }
 
@@ -182,51 +182,79 @@
   background: #fff;
   border: 1px solid var(--ink);
   border-radius: 6px;
-  font: 13px Verdana, sans-serif;
+  font: 14px Verdana, sans-serif;
   color: var(--ink);
   cursor: pointer;
   text-align: left;
 }
 
 .nav-icon {
-  width: 26px;
-  height: 26px;
+  width: 42px;
+  height: 42px;
   flex: none;
-  border: 1px solid var(--ink);
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: var(--paper);
+  border: 1px solid rgba(42, 39, 64, .2);
+  transition: transform .18s ease;
 }
-
-.nav-icon-rack {
-  border-radius: 50%;
-  background: conic-gradient(#cfd6e4, #f3d9ea, #d6e8e4, #cfe0ee, #cfd6e4);
-}
-
-.nav-icon-about { background: #c8a16a; }
-.nav-icon-resume { background: var(--paper); }
-.nav-icon-contact { background: #f6e7ef; }
+.nav-icon svg { width: 30px; height: 30px; }
+.nav-item:hover .nav-icon { transform: rotate(-6deg) scale(1.08); }
+.nav-item:hover { box-shadow: 3px 3px 0 var(--ink); transform: translate(-1px, -1px); }
+.nav-item { transition: box-shadow .15s ease, transform .15s ease; }
 
 .nav-tag {
   margin-left: auto;
-  font: 10px VT323, monospace;
+  font: 16px VT323, monospace;
   color: var(--muted-2);
 }
 
-.idle-footnote {
-  margin-top: 20px;
-  font: 11px/1.6 VT323, monospace;
-  color: var(--muted-2);
+.nav-text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.nav-text small { font: 13px/1.45 Verdana, sans-serif; color: var(--muted); }
+
+.egg-card {
+  margin-top: 18px;
+  padding: 14px;
+  border: 1px dashed var(--ink);
+  border-radius: 6px;
+  background: rgba(247, 217, 121, .28);
+}
+.egg-head { display: flex; align-items: baseline; justify-content: space-between; }
+.egg-title { font: 400 15px Silkscreen, monospace; color: var(--ink); }
+.egg-count { font: 20px VT323, monospace; color: var(--ink); }
+.egg-desc { margin: 8px 0 12px; font: 13.5px/1.6 Verdana, sans-serif; color: var(--muted); }
+.egg-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.egg-list li { display: flex; align-items: center; gap: 8px; font: 13.5px Verdana, sans-serif; color: var(--ink); }
+.egg-dot { width: 12px; height: 12px; flex: none; border: 1px solid var(--ink); border-radius: 50%; background: #fff; }
+.egg-name { font-weight: bold; }
+.egg-hint { margin-left: auto; font: 13px Verdana, sans-serif; color: var(--muted-2); text-align: right; }
+.egg-list li.found .egg-dot { background: var(--accent-pink); }
+.egg-list li.found .egg-hint { display: none; }
+.egg-done .egg-desc::after { content: ' you found them all.'; color: var(--ink); font-weight: bold; }
+
+.idle-quick {
+  margin-top: 14px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: 17px VT323, monospace;
+  color: var(--muted);
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 /* work */
 
 .work-stack {
-  font: 11px VT323, monospace;
+  font: 16px VT323, monospace;
   color: var(--muted);
   margin-top: 6px;
 }
 
 .work-body {
   margin-top: 18px;
-  font: 13px/1.8 Verdana, sans-serif;
+  font: 15px/1.8 Verdana, sans-serif;
   color: var(--ink-soft);
 }
 
@@ -234,7 +262,7 @@
   margin-top: 14px;
   border-left: 3px solid var(--accent-pink);
   padding-left: 12px;
-  font: 12px/1.7 Verdana, sans-serif;
+  font: 14.5px/1.7 Verdana, sans-serif;
   color: var(--ink-soft);
 }
 
@@ -254,7 +282,7 @@
 
 .work-private {
   align-self: center;
-  font: 12px Verdana, sans-serif;
+  font: 13px Verdana, sans-serif;
   color: var(--muted);
 }
 
@@ -269,7 +297,7 @@
   background: var(--ink);
   color: #fff;
   border-radius: 5px;
-  font: 400 9px Silkscreen, monospace;
+  font: 400 12px Silkscreen, monospace;
   padding: 9px 13px;
 }
 
@@ -278,7 +306,7 @@
   color: var(--ink);
   border: 1px solid var(--ink);
   border-radius: 5px;
-  font: 400 9px Silkscreen, monospace;
+  font: 400 12px Silkscreen, monospace;
   padding: 9px 13px;
 }
 
@@ -297,13 +325,13 @@
   background: #fff;
   border: 1px solid var(--ink);
   border-radius: 5px;
-  font: 400 9px Silkscreen, monospace;
+  font: 400 12px Silkscreen, monospace;
   color: var(--ink);
   cursor: pointer;
 }
 
 .disc-count {
-  font: 10px VT323, monospace;
+  font: 16px VT323, monospace;
   color: var(--muted-2);
 }
 
@@ -311,7 +339,7 @@
 
 .about-text {
   margin: 12px 0 0;
-  font: 13px/1.8 Verdana, sans-serif;
+  font: 15px/1.8 Verdana, sans-serif;
   color: var(--ink-soft);
 }
 
@@ -331,14 +359,14 @@
   background: #f7f6f3;
   border: 1px solid var(--ink);
   border-radius: 999px;
-  font: 11px Verdana, sans-serif;
+  font: 13px Verdana, sans-serif;
   color: var(--ink);
 }
 
 .linkedin-link {
   display: inline-block;
   margin-top: 20px;
-  font: 12px Verdana, sans-serif;
+  font: 13px Verdana, sans-serif;
   color: var(--accent);
 }
 
@@ -346,7 +374,7 @@
 
 .contact-desc {
   margin: 16px 0 18px;
-  font: 13px/1.8 Verdana, sans-serif;
+  font: 15px/1.8 Verdana, sans-serif;
   color: var(--ink-soft);
 }
 
@@ -370,7 +398,7 @@
 
 .contact-value {
   margin-left: auto;
-  font: 11px VT323, monospace;
+  font: 16px VT323, monospace;
   color: var(--muted);
 }
 
@@ -431,7 +459,7 @@
 }
 
 .track-name {
-  font: 12px Verdana, sans-serif;
+  font: 13px Verdana, sans-serif;
   color: var(--ink);
 }
 
@@ -451,7 +479,7 @@
   display: flex;
   justify-content: space-between;
   margin-top: 4px;
-  font: 10px VT323, monospace;
+  font: 16px VT323, monospace;
   color: var(--muted-2);
 }
 

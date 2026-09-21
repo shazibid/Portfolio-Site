@@ -252,9 +252,11 @@ export function buildScene(T, host) {
   const cases = [];
   projects.forEach((cd, i) => {
     const g = new T.Group(); g.name = 'case' + i;
+    const coverMat = new T.MeshStandardMaterial({ map: coverTexture(T, cd, i), roughness: 0.34, emissive: 0xffffff, emissiveIntensity: 0 });
+    coverMat.emissiveMap = coverMat.map; // the controller raises this on the case being viewed so it stays bright
     const box = new T.Mesh(new T.BoxGeometry(1.25, 1.25, 0.09), [
       chromeMat, chromeMat, chromeMat, chromeMat,
-      new T.MeshStandardMaterial({ map: coverTexture(T, cd, i), roughness: 0.34 }),
+      coverMat,
       mat({ color: 0xe9e7e2, roughness: 0.5 })
     ]);
     box.name = 'caseBody' + i; box.castShadow = true; g.add(box);

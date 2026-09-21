@@ -12,10 +12,6 @@ const el = {
   modeToggle: document.getElementById('modeToggle'),
   hoverChip: document.getElementById('hoverChip'),
   meowBubble: document.getElementById('meowBubble'),
-  rackBar: document.getElementById('rackBar'),
-  rackBackBtn: document.getElementById('rackBackBtn'),
-  computerBar: document.getElementById('computerBar'),
-  computerBackBtn: document.getElementById('computerBackBtn'),
   resumeOverlay: document.getElementById('resumeOverlay'),
   resumeCloseBtn: document.getElementById('resumeCloseBtn'),
   panel: document.getElementById('panel'),
@@ -66,6 +62,7 @@ const ICON_PAUSE = '<svg viewBox="0 0 12 12" aria-hidden="true"><rect x="2.5" y=
 // autoplay) unless the visitor turned it off with the dock's toggle
 const lofi = createLofi();
 let lofiMuted = false;
+let lofiPausedForSong = false;
 function syncMusicBtn() {
   el.dockToggle.innerHTML = lofi.on ? ICON_PAUSE : ICON_PLAY;
   el.dockVinyl.classList.toggle('spinning', lofi.on);
@@ -166,8 +163,6 @@ room.addEventListener('click', () => {
 });
 
 el.panelBackBtn.addEventListener('click', back);
-el.computerBackBtn.addEventListener('click', back);
-el.rackBackBtn.addEventListener('click', back);
 el.resumeCloseBtn.addEventListener('click', back);
 el.resumeOverlay.addEventListener('click', (e) => { if (e.target === el.resumeOverlay) back(); });
 el.prevDiscBtn.addEventListener('click', step(-1));
@@ -234,9 +229,8 @@ function render() {
   const { zone, index, mode, playing } = state;
   const project = projects[index >= 0 ? index : 0];
 
-  el.rackBar.hidden = zone !== 'rack';
   el.resumeOverlay.hidden = zone !== 'resume';
-  el.computerBar.hidden = zone !== 'computer';
+  el.hoverChip.classList.toggle('chip-bottom', zone === '' || zone === 'rack');
 
   // the panel only shows for the three content zones; at idle it stays off-screen
   // so the room is unobstructed, and the rack/resume have their own dedicated UI.
@@ -300,7 +294,13 @@ function render() {
     audio.pause();
   }
   el.previewVolume.hidden = !track; // the volume slider only drives song previews
-  lofi.duck(!!(playing && track));
+  // the loop stays paused while a disc's song plays, and picks back up afterwards if it was on
+  if (playing && track) {
+    if (lofi.on) { lofi.stop(); lofiPausedForSong = true; syncMusicBtn(); }
+  } else if (lofiPausedForSong) {
+    lofiPausedForSong = false;
+    if (!lofiMuted) lofi.start().then(syncMusicBtn);
+  }
   el.playBtn.innerHTML = playing ? ICON_PAUSE : ICON_PLAY;
 }
 
@@ -440,7 +440,11 @@ function openQuick() {
 
 function closeQuick() {
   if (room.failed) return; // nothing to go back to
-  quickView.hidden = true;
+  quickView.classList.add('leaving');
+  setTimeout(() => {
+    quickView.classList.remove('leaving');
+    quickView.hidden = true;
+  }, matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 260);
   if (quickReturnFocus && quickReturnFocus.focus) quickReturnFocus.focus();
 }
 
@@ -498,3 +502,32 @@ document.addEventListener('click', (e) => {
     () => showToast(address)
   );
 }); // no preventDefault: the mail app still opens where there is one
+
+// easter egg tracker in the idle panel: remembers what this visitor has found
+const EGGS = { cat: 'the cat', butterfly: 'the butterfly', computer: 'the laptop' };
+let eggsFound = [];
+try { eggsFound = JSON.parse(localStorage.getItem('eggsFound') || '[]').filter((k) => k in EGGS); } catch (e) { /* private mode */ }
+
+function renderEggs() {
+  const total = Object.keys(EGGS).length;
+  document.getElementById('eggCount').textContent = eggsFound.length + ' / ' + total + ' found';
+  document.getElementById('eggCard').classList.toggle('egg-done', eggsFound.length === total);
+  document.querySelectorAll('#eggList li').forEach((li) => {
+    const found = eggsFound.includes(li.dataset.egg);
+    li.classList.toggle('found', found);
+    li.querySelector('.egg-name').textContent = found ? EGGS[li.dataset.egg] : '???';
+  });
+}
+
+function foundEgg(key) {
+  if (eggsFound.includes(key)) return;
+  eggsFound.push(key);
+  try { localStorage.setItem('eggsFound', JSON.stringify(eggsFound)); } catch (e) { /* private mode */ }
+  renderEggs();
+  showToast('easter egg found: ' + EGGS[key] + ' (' + eggsFound.length + '/' + Object.keys(EGGS).length + ')');
+}
+
+room.addEventListener('catmeow', () => foundEgg('cat'));
+room.addEventListener('butterflyshoo', () => foundEgg('butterfly'));
+room.addEventListener('zoneselect', (e) => { if (e.detail.zone === 'computer') foundEgg('computer'); });
+renderEggs();

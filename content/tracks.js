@@ -2,10 +2,10 @@
 // preview is a 30s Apple Music clip (from the iTunes Search API); link opens the full song, art is the album cover printed on the disc.
 export const tracks = [
   {
-    title: 'the less i know the better',
-    artist: 'tame impala',
-    preview: 'https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/f2/e9/c4/f2e9c461-78b6-374e-681d-b654295df3a4/mzaf_6068998697660055296.plus.aac.p.m4a',
-    link: 'https://music.apple.com/us/album/the-less-i-know-the-better/1440838039?i=1440838488',
+    title: 'good days',
+    artist: 'sza',
+    preview: 'https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/9b/32/fe/9b32fec3-fbfb-db0f-3dcf-bb089d412f23/mzaf_15200324731067771849.plus.aac.p.m4a',
+    link: 'https://music.apple.com/us/album/good-days/1658650093?i=1658650802',
     art: './assets/covers/0.jpg'
   },
   {
@@ -16,10 +16,10 @@ export const tracks = [
     art: './assets/covers/1.jpg'
   },
   {
-    title: 'normal girl',
-    artist: 'sza',
-    preview: 'https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/cf/e4/82/cfe4820a-2830-d4b2-af62-e44e479ceb84/mzaf_6960146568850049402.plus.aac.p.m4a',
-    link: 'https://music.apple.com/us/album/normal-girl/1239976329?i=1239976613',
+    title: 'the less i know the better',
+    artist: 'tame impala',
+    preview: 'https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/f2/e9/c4/f2e9c461-78b6-374e-681d-b654295df3a4/mzaf_6068998697660055296.plus.aac.p.m4a',
+    link: 'https://music.apple.com/us/album/the-less-i-know-the-better/1440838039?i=1440838488',
     art: './assets/covers/2.jpg'
   },
   {

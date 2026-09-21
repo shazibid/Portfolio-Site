@@ -76,14 +76,6 @@
         <button class="np-toggle" id="dockToggle" type="button" aria-label="toggle background music"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5v9l7.5-4.5z"/></svg></button>
         <input class="vol-slider" id="dockVol" type="range" min="0" max="100" value="80" aria-label="lofi volume">
       </div>
-
-      <div class="rack-bar" id="computerBar" hidden>
-        <button class="btn btn-dark" id="computerBackBtn" type="button">room</button>
-      </div>
-
-      <div class="rack-bar" id="rackBar" hidden>
-        <button class="btn btn-dark" id="rackBackBtn" type="button">room</button>
-      </div>
     </div>
 
     <div class="resume-overlay" id="resumeOverlay" hidden>
@@ -176,31 +168,45 @@
 
       <div class="panel-body">
         <section class="panel-section" id="panelIdle">
-          <div class="idle-title">look around</div>
-          <p class="idle-desc">there's no nav bar. everything in the room is a page — click the thing you want.</p>
+          <div class="idle-title">start here</div>
+          <p class="idle-desc">this whole portfolio is one little room. every object is a page — <b>click it</b> to open it, <b>esc</b> to come back out.</p>
           <div class="nav-list">
             <button class="nav-item" id="navWork" type="button">
-              <span class="nav-icon nav-icon-rack"></span>
-              the rack — 5 projects
+              <span class="nav-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="12" fill="#1d1b2b"/><circle cx="16" cy="16" r="8.5" fill="none" stroke="#fff" stroke-opacity=".18"/><circle cx="16" cy="16" r="4.6" fill="#f3a6cf"/><circle cx="16" cy="16" r="1.4" fill="#1d1b2b"/><path d="M8 9a10 10 0 0 1 7-4" fill="none" stroke="#fff" stroke-opacity=".5" stroke-linecap="round" stroke-width="1.6"/></svg></span>
+              <span class="nav-text"><b>the rack</b><small>5 projects, one album each. pick a disc to hear the story</small></span>
               <span class="nav-tag">work</span>
             </button>
             <button class="nav-item" id="navAbout" type="button">
-              <span class="nav-icon nav-icon-about"></span>
-              the corkboard
+              <span class="nav-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="4" width="26" height="24" rx="3" fill="#c8a16a" stroke="#8a6a3d" stroke-width="1.5"/><rect x="7" y="8" width="11" height="9" fill="#fff8e6" transform="rotate(-4 12 12)"/><rect x="16" y="15" width="10" height="9" fill="#f8c9dd" transform="rotate(5 21 19)"/><circle cx="12" cy="8.5" r="1.8" fill="#e5484d"/><circle cx="21" cy="15.5" r="1.8" fill="#7cc4ea"/></svg></span>
+              <span class="nav-text"><b>the corkboard</b><small>who I am, what I'm into</small></span>
               <span class="nav-tag">about</span>
             </button>
             <button class="nav-item" id="navResume" type="button">
-              <span class="nav-icon nav-icon-resume"></span>
-              papers on the desk
+              <span class="nav-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 3h12l6 6v20H8z" fill="#fffdf6" stroke="#2a2740" stroke-width="1.5" stroke-linejoin="round"/><path d="M20 3v6h6" fill="#e8e0cc" stroke="#2a2740" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 14h10M12 18h10M12 22h6" stroke="#9b95b0" stroke-width="1.6" stroke-linecap="round"/><rect x="12" y="10" width="5" height="1.8" fill="#f08ab0"/></svg></span>
+              <span class="nav-text"><b>papers on the desk</b><small>the one-page resume</small></span>
               <span class="nav-tag">resume</span>
             </button>
             <button class="nav-item" id="navContact" type="button">
-              <span class="nav-icon nav-icon-contact"></span>
-              the mail tray
+              <span class="nav-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="7" width="26" height="18" rx="2.5" fill="#f6e7ef" stroke="#2a2740" stroke-width="1.5"/><path d="M4 9l12 9 12-9" fill="none" stroke="#2a2740" stroke-width="1.5" stroke-linejoin="round"/><path d="M16 22.6c-3-2.2-4.2-3.4-4.2-4.8 0-1.2.9-2 2-2 .9 0 1.7.5 2.2 1.3.5-.8 1.3-1.3 2.2-1.3 1.1 0 2 .8 2 2 0 1.4-1.2 2.6-4.2 4.8z" fill="#e5484d" transform="translate(0 -3) scale(1)"/></svg></span>
+              <span class="nav-text"><b>the mail tray</b><small>email and links. I reply</small></span>
               <span class="nav-tag">say hi</span>
             </button>
           </div>
-          <div class="idle-footnote">the cat is not a page. the cat is just there.</div>
+
+          <div class="egg-card" id="eggCard">
+            <div class="egg-head">
+              <span class="egg-title">easter eggs</span>
+              <span class="egg-count" id="eggCount">0 / 3 found</span>
+            </div>
+            <p class="egg-desc">3 things in the room do something you wouldn't expect. hover the room and see what reacts.</p>
+            <ul class="egg-list" id="eggList">
+              <li data-egg="cat"><span class="egg-dot"></span><span class="egg-name">???</span><span class="egg-hint">someone's napping on the desk</span></li>
+              <li data-egg="butterfly"><span class="egg-dot"></span><span class="egg-name">???</span><span class="egg-hint">something is flying around</span></li>
+              <li data-egg="computer"><span class="egg-dot"></span><span class="egg-name">???</span><span class="egg-hint">the laptop wants to be used</span></li>
+            </ul>
+          </div>
+
+          <button class="idle-quick" type="button" data-open-quick>prefer plain text? read the quick version</button>
         </section>
 
         <section class="panel-section" id="panelWork" hidden>
@@ -235,8 +241,8 @@
             <span class="tag-pill">break through tech ai</span>
             <span class="tag-pill">san diego</span>
           </div>
-          <div class="cork-grid" id="corkGrid"></div>
           <a class="linkedin-link" href="https://linkedin.com/in/shazi-bidarian">more on linkedin</a>
+          <div class="cork-grid" id="corkGrid"></div>
         </section>
 
         <section class="panel-section" id="panelContact" hidden>

@@ -35,7 +35,7 @@
 .dot-teal { background: #55d3e0; }
 
 .badge-label {
-  font: 400 11px Silkscreen, monospace;
+  font: 400 12px Silkscreen, monospace;
   color: var(--ink);
 }
 
@@ -67,7 +67,7 @@
   padding: 6px 9px;
   background: none;
   border-radius: 999px;
-  font: 400 9px Silkscreen, monospace;
+  font: 400 12px Silkscreen, monospace;
   color: var(--ink);
   cursor: pointer;
 }
@@ -86,7 +86,7 @@
   box-shadow: 0 12px 32px rgba(42, 39, 64, .16);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  font: 400 9px Silkscreen, monospace;
+  font: 400 12px Silkscreen, monospace;
   color: var(--ink);
   cursor: pointer;
   animation: tipIn .45s ease-out both;
@@ -94,9 +94,8 @@
 
 .hover-chip {
   position: absolute;
-  left: 50%;
-  bottom: 20px;
-  transform: translateX(-50%);
+  right: 20px;
+  top: 62px;
   padding: 5px 10px;
   background: rgba(255, 255, 255, .62);
   border: 1px solid rgba(42, 39, 64, .22);
@@ -104,8 +103,19 @@
   box-shadow: 0 10px 24px rgba(42, 39, 64, .12);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  font: 400 9px Silkscreen, monospace;
+  font: 400 12px Silkscreen, monospace;
   color: var(--ink);
+}
+
+/* bottom-centre only in the full room and at the album rack; everywhere else it stays top right */
+.hover-chip.chip-bottom {
+  right: auto;
+  top: auto;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  padding: 8px 18px;
+  font-size: 13px;
 }
 
 .meow-bubble {
@@ -122,20 +132,6 @@
   animation: popIn .22s cubic-bezier(.2, .9, .25, 1) both;
 }
 
-.rack-bar {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 20px;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  animation: tipIn .4s ease-out both;
-  pointer-events: none; /* the bar spans the full width and sits over the lofi dock: only its buttons take clicks */
-}
-
-.rack-bar > * { pointer-events: auto; }
-
 /* short landscape viewports (phones on their side) */
 @media (max-height: 500px) {
   .topbar-badge,
@@ -146,14 +142,21 @@
   .topbar-badge { left: max(12px, env(safe-area-inset-left)); }
   .top-actions { right: max(12px, env(safe-area-inset-right)); }
 
-  .hover-chip { bottom: 10px; }
+  .hover-chip {
+    top: 48px;
+    right: max(12px, env(safe-area-inset-right));
+  }
+
+  .hover-chip.chip-bottom {
+    top: auto;
+    right: auto;
+    bottom: 10px;
+  }
 
   .meow-bubble {
     left: 80px;
     top: 60px;
   }
-
-  .rack-bar { bottom: 10px; }
 }
 
 /* lofi controls, bottom-right of the room; slides left when the side panel is open */
@@ -177,6 +180,6 @@
 .lofi-dock.panel-open { right: min(556px, calc(100vw - 260px)); }
 
 .dock-title {
-  font: 400 9px Silkscreen, monospace;
+  font: 400 12px Silkscreen, monospace;
   color: var(--ink);
 }

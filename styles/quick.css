@@ -4,7 +4,7 @@
 .rotate-plain,
 .welcome-skip {
   background: none;
-  font: 12px Verdana, sans-serif;
+  font: 13px Verdana, sans-serif;
   color: var(--accent);
   text-decoration: underline;
   cursor: pointer;
@@ -27,6 +27,26 @@
   background: var(--bg);
   color: var(--ink);
   font: 14px/1.6 Verdana, Geneva, sans-serif;
+  animation: quick-in 420ms ease both;
+}
+
+.quick-view.leaving {
+  animation: quick-out 260ms ease forwards;
+  pointer-events: none;
+}
+
+@keyframes quick-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes quick-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quick-view, .quick-view.leaving { animation: none; }
 }
 
 .quick-inner {
@@ -114,12 +134,12 @@
 }
 
 .quick-repo {
-  font: 400 10px Silkscreen, monospace;
+  font: 400 12px Silkscreen, monospace;
   margin-right: 14px;
 }
 
 .quick-private {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--muted);
 }
 

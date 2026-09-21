@@ -46,14 +46,159 @@ export function createScreen(T) {
     texture.needsUpdate = true;
   }
 
+  // ---- games + hobbies tabs: pixel-art tiles that animate, rank meters, and chips
+  const INK = '#2a2740', PINK = '#e9447f', TEAL = '#2ba7b5', GOLD = '#f2c14e';
+  function rect(x, y, w, h, c) { g.fillStyle = c; g.fillRect(Math.round(x), Math.round(y), w, h); }
+  function star(x, y, r, c) {
+    g.fillStyle = c; g.beginPath();
+    g.moveTo(x, y - r); g.quadraticCurveTo(x, y, x + r, y); g.quadraticCurveTo(x, y, x, y + r);
+    g.quadraticCurveTo(x, y, x - r, y); g.quadraticCurveTo(x, y, x, y - r); g.fill();
+  }
+  function tile(x, y, s, bg) { rect(x, y, s, s, bg); g.strokeStyle = INK; g.lineWidth = 3; g.strokeRect(x, y, s, s); }
+  function chip(text, xr, y, bg, fg) {
+    g.font = '14px Silkscreen, monospace';
+    const w = g.measureText(text).width + 16;
+    rect(xr - w, y, w, 20, bg); g.strokeStyle = INK; g.lineWidth = 2; g.strokeRect(xr - w, y, w, 20);
+    g.fillStyle = fg; g.textAlign = 'left'; g.fillText(text, xr - w + 8, y + 11);
+  }
+  function meter(x, y, w, fill) {
+    const n = 10, sw = (w - (n - 1) * 3) / n, lit = fill * n;
+    for (let i = 0; i < n; i++) {
+      const on = i < Math.floor(lit) || (i === Math.floor(lit) && st % 6 < 3); // the frontier segment blinks
+      rect(x + i * (sw + 3), y, sw, 12, i < lit ? (on ? PINK : '#f5c9e4') : '#e4e7ef');
+    }
+  }
+
+  // game icons, 44px tiles; each has a little idle animation driven by st
+  const GAME_ICON = {
+    valorant(x, y, s) {
+      tile(x, y, s, '#ff4655');
+      g.fillStyle = '#fff'; g.beginPath();
+      g.moveTo(x + 8, y + 12); g.lineTo(x + 17, y + 12); g.lineTo(x + 25, y + 27); g.lineTo(x + 25, y + 12);
+      g.lineTo(x + 36, y + 12); g.lineTo(x + 25, y + 34); g.lineTo(x + 20, y + 34); g.closePath(); g.fill();
+    },
+    overwatch(x, y, s) {
+      tile(x, y, s, '#f99e1a');
+      g.strokeStyle = '#fff'; g.lineWidth = 5; g.beginPath(); g.arc(x + 22, y + 22, 12, 0, 6.3); g.stroke();
+      rect(x + 18, y + 8, 8, 14, '#fff'); // the little notch
+      g.fillStyle = '#f99e1a'; g.fillRect(x + 20, y + 8, 4, 6);
+      g.fillStyle = '#fff'; g.beginPath(); g.moveTo(x + 22, y + 34); g.lineTo(x + 14, y + 26); g.lineTo(x + 30, y + 26); g.fill();
+    },
+    genshin(x, y, s) {
+      tile(x, y, s, '#6d5bd0');
+      const p = 1 + Math.sin(st * 0.35) * 0.2;
+      star(x + 22, y + 22, 15 * p, GOLD); star(x + 22, y + 22, 7 * p, '#fff');
+      star(x + 10, y + 11, 4 + Math.sin(st * 0.5) * 2, '#fff'); star(x + 35, y + 33, 4 + Math.cos(st * 0.5) * 2, '#fff');
+    },
+    minecraft(x, y, s) {
+      tile(x, y, s, '#7cc4ea');
+      const b = 8, ox = x + 6, oy = y + 6; // 4x4 grass block, deterministic speckle
+      for (let r = 0; r < 4; r++) for (let c = 0; c < 4; c++) {
+        const top = r === 0, v = (r * 5 + c * 3) % 4;
+        rect(ox + c * b, oy + r * b, b, b, top ? (v % 2 ? '#5fae3c' : '#6fbf4a') : (v % 2 ? '#8a5a35' : '#7a4e2c'));
+      }
+      rect(ox + 8, oy + 8, b, b / 2, '#6fbf4a'); // grass overhang
+    },
+    tomodachi(x, y, s) {
+      tile(x, y, s, '#c9ecf0');
+      g.fillStyle = GOLD; g.beginPath(); g.arc(x + 22, y + 22, 15, 0, 6.3); g.fill(); g.strokeStyle = INK; g.lineWidth = 2; g.stroke();
+      const blinkNow = st % 22 < 2;
+      rect(x + 15, y + 17, 4, blinkNow ? 2 : 7, INK); rect(x + 26, y + 17, 4, blinkNow ? 2 : 7, INK);
+      g.strokeStyle = INK; g.beginPath(); g.arc(x + 22, y + 26, 6, 0.2, 2.9); g.stroke();
+      rect(x + 12, y + 26, 4, 3, '#f5a3c1'); rect(x + 29, y + 26, 4, 3, '#f5a3c1');
+    }
+  };
+  const GAME_KEYS = ['valorant', 'overwatch', 'genshin', 'minecraft', 'tomodachi'];
+
+  // hobby icons, 60px tiles
+  const HOBBY_ICON = {
+    art(x, y, s) {
+      tile(x, y, s, '#fff7ea');
+      const cols = [PINK, GOLD, TEAL, '#8a6fd6'];
+      cols.forEach((c, i) => { g.fillStyle = c; g.beginPath(); g.arc(x + 12 + (i % 2) * 14, y + 14 + Math.floor(i / 2) * 13, 5, 0, 6.3); g.fill(); });
+      // brush strokes paint themselves across the bottom, then reset
+      const t = (st % 40) / 40;
+      g.strokeStyle = cols[Math.floor(st / 40) % 4]; g.lineWidth = 5; g.lineCap = 'round';
+      g.beginPath(); g.moveTo(x + 8, y + 46);
+      for (let u = 0; u <= t; u += 0.05) g.lineTo(x + 8 + u * 44, y + 46 + Math.sin(u * 9) * 4);
+      g.stroke(); g.lineCap = 'butt';
+    },
+    nails(x, y, s) {
+      tile(x, y, s, '#ffe3f0');
+      const pol = [PINK, TEAL, GOLD, '#8a6fd6', '#f5a3c1'], hs = [12, 8, 5, 8, 14]; // finger tops, pinky..thumb-ish
+      for (let i = 0; i < 5; i++) {
+        const fx = x + 6 + i * 10, top = y + 12 + (i === 2 ? 0 : i === 1 || i === 3 ? 4 : 10);
+        rect(fx, top, 8, y + s - 4 - top, '#f6d5b8');
+        rect(fx, top, 8, 9, pol[(i + Math.floor(st / 14)) % 5]); // polish colors rotate along the fingers
+        if ((st + i * 5) % 20 < 3) star(fx + 6, top + 2, 4, '#fff');
+      }
+      rect(x + 4, y + s - 12, s - 8, 8, '#f6d5b8');
+    },
+    band(x, y, s) {
+      tile(x, y, s, '#2a2740');
+      const eq = [0, 1, 2, 3, 4, 5]; // little equalizer under the notes
+      eq.forEach((i) => { const h = 6 + Math.abs(Math.sin(st * 0.4 + i * 1.3)) * 22; rect(x + 8 + i * 8, y + s - 8 - h, 5, h, i % 2 ? PINK : TEAL); });
+      g.fillStyle = '#fff'; g.font = '22px VT323, monospace'; g.textAlign = 'center';
+      const bob = Math.sin(st * 0.3) * 3;
+      g.fillText('♪', x + 16, y + 14 + bob); g.fillText('♫', x + 40, y + 12 - bob); g.textAlign = 'left';
+    },
+    piano(x, y, s) {
+      tile(x, y, s, '#fff');
+      const kw = 8, pressed = Math.floor(st / 6) % 7;
+      for (let i = 0; i < 7; i++) rect(x + 2 + i * kw, y + 2, kw - 1, s - 4 - (i === pressed ? 4 : 0), i === pressed ? '#f5c9e4' : '#f4f2fa');
+      [0, 1, 3, 4, 5].forEach((i) => rect(x + 2 + i * kw + 5, y + 2, 6, 30, INK));
+    },
+    skating(x, y, s) {
+      tile(x, y, s, '#dff3f7');
+      rect(x + 3, y + 40, s - 6, 2, '#a6d6de');
+      const u = (st % 60) / 60, px = x + 8 + u * (s - 16), py = y + 30 - Math.abs(Math.sin(u * Math.PI * 2)) * 8;
+      g.strokeStyle = 'rgba(42,167,181,.5)'; g.lineWidth = 2; g.beginPath(); g.moveTo(x + 8, y + 42); g.lineTo(px, y + 42); g.stroke();
+      rect(px - 3, py - 14, 6, 6, '#f6d5b8'); rect(px - 4, py - 8, 8, 12, PINK); rect(px - 5, py + 4, 4, 6, INK); rect(px + 1, py + 4, 4, 6, INK);
+    },
+    beach(x, y, s) {
+      tile(x, y, s, '#ffd9ec');
+      g.fillStyle = GOLD; g.beginPath(); g.arc(x + 40, y + 16 + Math.sin(st * 0.15) * 2, 8, 0, 6.3); g.fill();
+      [[6, 20], [16, 30], [26, 24], [38, 34], [48, 26]].forEach(([bx, bh]) => { rect(x + bx, y + 44 - bh, 9, bh, '#5a4f8a'); rect(x + bx + 2, y + 44 - bh + 3, 2, 2, GOLD); });
+      rect(x + 2, y + 44, s - 4, 14, '#7fd0d8');
+      for (let i = 0; i < 4; i++) rect(x + 5 + ((i * 15 + st) % (s - 14)), y + 48 + (i % 2) * 5, 8, 2, '#fff');
+    }
+  };
+  const HOBBY_KEYS = ['art', 'band', 'piano', 'skating', 'beach', 'nails'];
+
   function drawList() {
-    tabs[active].items.forEach((it, i) => {
-      const y = 132 + i * 60;
-      g.fillStyle = i % 2 ? '#fff' : '#f7f2fb'; g.fillRect(28, y, W - 56, 52);
-      g.fillStyle = '#e9447f'; g.font = '30px VT323, monospace'; g.fillText('♥', 42, y + 27);
-      g.fillStyle = '#2a2740'; g.font = '20px Silkscreen, monospace'; g.fillText(it[0], 84, y + 17);
-      g.fillStyle = '#6d6a85'; g.font = '24px VT323, monospace'; g.fillText(it[1], 84, y + 39);
-    });
+    const t = tabs[active], games = t.name === 'games';
+    g.textBaseline = 'middle'; g.textAlign = 'left';
+    g.fillStyle = INK; g.font = '22px VT323, monospace';
+    g.fillText(games ? '▸ player select' : '▸ off-duty', 30, 118);
+    g.fillStyle = '#6d6a85'; g.fillText(games ? '5 saves loaded' : 'what i do when i log off', 190, 118);
+    if (st % 12 < 6) { g.fillStyle = PINK; g.fillRect(W - 44, 111, 12, 14); }
+
+    if (games) {
+      t.items.forEach((it, i) => {
+        const y = 136 + i * 63;
+        rect(28, y, W - 56, 57, i % 2 ? '#fff' : '#f7f2fb');
+        rect(28, y, 4, 57, [PINK, GOLD, '#6d5bd0', '#6fbf4a', TEAL][i]);
+        GAME_ICON[GAME_KEYS[i]](40, y + 6, 44);
+        g.textAlign = 'left'; g.fillStyle = INK; g.font = '20px Silkscreen, monospace'; g.fillText(it[0], 98, y + 19);
+        g.fillStyle = '#6d6a85'; g.font = '22px VT323, monospace'; g.fillText(it[1], 98, y + 42);
+        if (it[3] != null) {
+          chip(it[2], W - 44, y + 6, '#fff', INK);
+          meter(W - 44 - 150, y + 36, 150, it[3]);
+        } else chip(it[2], W - 44, y + 18, '#f5c9e4', INK);
+      });
+    } else {
+      const cw = 352, chh = 104;
+      t.items.forEach((it, i) => {
+        const x = 28 + (i % 2) * (cw + 8), y = 136 + Math.floor(i / 2) * (chh + 6);
+        rect(x, y, cw, chh, i % 3 === 1 ? '#f7f2fb' : '#fff'); g.strokeStyle = INK; g.lineWidth = 2; g.strokeRect(x, y, cw, chh);
+        rect(x, y, cw, 4, [PINK, TEAL, GOLD, '#8a6fd6', '#6fbf4a', '#f5a3c1'][i]);
+        HOBBY_ICON[HOBBY_KEYS[i]](x + 14, y + 26, 60);
+        g.textAlign = 'left'; g.fillStyle = INK; g.font = '20px Silkscreen, monospace'; g.fillText(it[0], x + 88, y + 22);
+        g.fillStyle = '#6d6a85'; g.font = '22px VT323, monospace';
+        wrapLines(it[1], cw - 100).slice(0, 2).forEach((l, k) => g.fillText(l, x + 88, y + 42 + k * 18));
+        chip(it[2], x + cw - 10, y + chh - 27, '#f5c9e4', INK);
+      });
+    }
   }
 
   // ---- workspace tab: a glimpse of my editor (dark purple theme, pixel file icons) with Claude Code working beside it
@@ -201,17 +346,13 @@ export function createScreen(T) {
     g.fillStyle = C.ink; g.font = '14px VT323, monospace'; g.fillText('v2*    0 errors    Prettier    Port: 5500', sx + 8, bot + 9);
   }
 
-  // the workspace animates (claude working, cursor blink) only while its tab is showing
+  // every tab animates (claude working, cursor blink, tile idle loops); the workspace restarts its script when picked
   function tick() {
     if (++st >= LOOP) st = 0;
     if (st % 5 === 0) blink = !blink;
     draw();
   }
-  function sync() {
-    const on = tabs[active].kind === 'workspace';
-    if (on && !timer) { st = 0; blink = true; timer = setInterval(tick, 90); }
-    else if (!on && timer) { clearInterval(timer); timer = 0; }
-  }
+  function sync() { if (!timer) timer = setInterval(tick, 90); }
 
   // uv (0..1, origin bottom-left) -> tab index or -1
   function tabAt(uv) {
@@ -222,6 +363,7 @@ export function createScreen(T) {
     return i >= 0 && i < tabs.length && inside ? i : -1;
   }
 
+  sync();
   draw();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
 
@@ -229,6 +371,6 @@ export function createScreen(T) {
     texture,
     tabAt,
     setHover(i) { if (i !== hover) { hover = i; draw(); } },
-    click(uv) { const i = tabAt(uv); if (i >= 0 && i !== active) { active = i; sync(); draw(); } return i >= 0; }
+    click(uv) { const i = tabAt(uv); if (i >= 0 && i !== active) { active = i; st = 0; draw(); } return i >= 0; }
   };
 }
