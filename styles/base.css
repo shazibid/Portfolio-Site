@@ -1,0 +1,133 @@
+:root {
+  --ink: #2a2740;
+  --ink-soft: #3b3757;
+  --muted: #5a5578;
+  --muted-2: #8a8ba0;
+  --accent: #b5257c;
+  --accent-pink: #e9447f;
+  --accent-teal: #2ba7b5;
+  --bg: #f2f1ee;
+  --paper: #fffdf8;
+}
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  font-family: Verdana, Geneva, sans-serif;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--ink);
+  text-decoration: underline;
+}
+
+button,
+a,
+input {
+  font: inherit;
+}
+
+button {
+  border: none;
+}
+
+/* the browser's built-in `[hidden] { display: none }` rule loses a
+   specificity tie against any component class below that also sets its own
+   `display` (e.g. .resume-overlay, .rack-bar use display:flex) — author
+   rules win ties over the UA stylesheet by source order. Toggling `.hidden`
+   in app.js must always win, so force it explicitly. */
+[hidden] {
+  display: none !important;
+}
+
+.shazi-room {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.room-stage {
+  position: relative;
+  height: 100vh;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.room-3d {
+  position: absolute;
+  inset: 0;
+}
+
+.room-3d cd-room-v2 {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* shared animations, used across chrome/panel/resume */
+
+@keyframes blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: translateY(14px) scale(.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes tipIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* shared buttons, used across chrome/panel */
+
+.btn {
+  cursor: pointer;
+}
+
+.btn-dark {
+  padding: 9px 13px;
+  background: rgba(42, 39, 64, .94);
+  border: 1px solid rgba(42, 39, 64, .75);
+  border-radius: 999px;
+  box-shadow: 0 14px 32px rgba(42, 39, 64, .18);
+  font: 400 9px Silkscreen, monospace;
+  color: #fff;
+}
+
+.btn-outline {
+  padding: 5px 10px;
+  background: #fff;
+  border: 1px solid var(--ink);
+  border-radius: 4px;
+  font: 400 9px Silkscreen, monospace;
+  color: var(--ink);
+}
+
+.spacer {
+  flex: 1;
+}

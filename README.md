@@ -8,19 +8,38 @@ say hi.
 ## Structure
 
 - `index.html` — page markup
-- `styles.css` — all styling
-- `app.js` — state machine wiring the UI to the 3D room (plain JS, no framework)
-- `cd-room-v2.js` — the `<cd-room-v2>` custom element: the Three.js room scene
-  (rack, corkboard, desk, mail tray, cat, day/night, butterfly). Emits
-  `zoneselect` / `zonehover` / `catmeow` DOM events and exposes
-  `selectZone(zone, index)`, `backOne()`, `deselect()`, `setMode('day'|'night')`.
+- `styles/` — one stylesheet per concern: `base.css` (reset, variables,
+  shared animations/buttons), `chrome.css` (floating badges/tips over the
+  room), `resume.css` (the resume overlay), `panel.css` (the side panel)
+- `content/` — plain data, edit this for copy changes:
+  - `projects.js` — the 5 rack "discs". Each entry drives **both** the 3D
+    case art and the case-study text in the panel, so adding/reordering a
+    project is a single edit here.
+  - `tracks.js` — the fake "now playing" track per project
+- `app.js` — state machine wiring the panel/overlay UI to the 3D room (plain
+  JS module, no framework)
+- `room/` — the `<cd-room-v2>` custom element (ES modules):
+  - `cd-room-v2.js` — defines the element, wires `scene.js` + `controller.js`
+    together
+  - `scene.js` — builds the static scene (lights, furniture, the four zone
+    props, cat, butterfly) from `content/projects.js`
+  - `controller.js` — pointer/click handling, the animation loop, and the
+    public API: `selectZone(zone, index)`, `backOne()`, `deselect()`,
+    `setMode('day'|'night')`; dispatches `zoneselect` / `zonehover` /
+    `catmeow` DOM events
+  - `textures.js` — canvas-drawn textures for props (CD covers, resume
+    sheet, polaroids, posters, window views, butterfly wings)
+  - `audio.js` — the synthesized "meow"
 - `uploads/` — resume PDF served for download
 
 ## Running locally
 
-Static site, no build step. Serve the folder with anything that serves plain
-files, e.g.:
+Static site, no build step — `app.js` and `room/*.js` are plain ES modules
+loaded via `<script type="module">`, so any static file server works, e.g.:
 
 ```sh
 npx serve .
 ```
+
+Opening `index.html` directly via `file://` will not work (ES modules
+require http/https), so always serve it.

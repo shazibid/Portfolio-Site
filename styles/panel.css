@@ -1,0 +1,318 @@
+/* the side panel: idle nav, work/about/contact sections, audio bar */
+
+.panel {
+  position: absolute;
+  /* starts below the mode-toggle/hover-chip pills in the top-right corner —
+     those two floating controls occupy roughly the same corner the panel
+     docks into, so if the panel started at top:18px like they do, it would
+     sit on top of them and swallow their clicks whenever it's open
+     (including at idle, now that the panel shows there too). */
+  top: 96px;
+  right: 18px;
+  width: min(520px, calc(100vw - 36px));
+  height: calc(100% - 114px);
+  background: rgba(255, 255, 255, .78);
+  border: 1px solid rgba(42, 39, 64, .38);
+  border-radius: 10px;
+  box-shadow: -14px 18px 50px rgba(42, 39, 64, .2);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  display: flex;
+  flex-direction: column;
+  transition: transform .52s cubic-bezier(.2, .85, .2, 1);
+  transform: translateX(0);
+}
+
+.panel.panel-hidden {
+  transform: translateX(101%);
+}
+
+.panel-header {
+  padding: 14px 20px;
+  border-bottom: 1px dashed rgba(42, 39, 64, .25);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.panel-kicker {
+  font: 400 10px Silkscreen, monospace;
+  color: var(--accent);
+}
+
+.panel-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.section-eyebrow {
+  font: 400 10px Silkscreen, monospace;
+  color: var(--muted-2);
+}
+
+.section-title {
+  font: 400 24px/1.3 Silkscreen, monospace;
+  color: var(--ink);
+  margin-top: 8px;
+}
+
+/* idle nav */
+
+.idle-title {
+  font: 400 20px/1.4 Silkscreen, monospace;
+  color: var(--ink);
+}
+
+.idle-desc {
+  margin: 12px 0 20px;
+  font: 13px/1.8 Verdana, sans-serif;
+  color: var(--muted);
+}
+
+.nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 14px;
+  background: #fff;
+  border: 1px solid var(--ink);
+  border-radius: 6px;
+  font: 13px Verdana, sans-serif;
+  color: var(--ink);
+  cursor: pointer;
+  text-align: left;
+}
+
+.nav-icon {
+  width: 26px;
+  height: 26px;
+  flex: none;
+  border: 1px solid var(--ink);
+}
+
+.nav-icon-rack {
+  border-radius: 50%;
+  background: conic-gradient(#cfd6e4, #f3d9ea, #d6e8e4, #cfe0ee, #cfd6e4);
+}
+
+.nav-icon-about { background: #c8a16a; }
+.nav-icon-resume { background: var(--paper); }
+.nav-icon-contact { background: #f6e7ef; }
+
+.nav-tag {
+  margin-left: auto;
+  font: 10px VT323, monospace;
+  color: var(--muted-2);
+}
+
+.idle-footnote {
+  margin-top: 20px;
+  font: 11px/1.6 VT323, monospace;
+  color: var(--muted-2);
+}
+
+/* work */
+
+.work-stack {
+  font: 11px VT323, monospace;
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+.work-body {
+  margin-top: 18px;
+  font: 13px/1.8 Verdana, sans-serif;
+  color: var(--ink-soft);
+}
+
+.work-note {
+  margin-top: 14px;
+  border-left: 3px solid var(--accent-pink);
+  padding-left: 12px;
+  font: 12px/1.7 Verdana, sans-serif;
+  color: var(--ink-soft);
+}
+
+.work-note-teal {
+  margin-top: 10px;
+  border-left-color: var(--accent-teal);
+}
+
+.work-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.link-btn-dark {
+  background: var(--ink);
+  color: #fff;
+  border-radius: 5px;
+  font: 400 9px Silkscreen, monospace;
+  padding: 9px 13px;
+}
+
+.link-btn-outline {
+  background: #fff;
+  color: var(--ink);
+  border: 1px solid var(--ink);
+  border-radius: 5px;
+  font: 400 9px Silkscreen, monospace;
+  padding: 9px 13px;
+}
+
+.disc-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 9px;
+  margin-top: 22px;
+  border-top: 1px dashed rgba(42, 39, 64, .25);
+  padding-top: 14px;
+}
+
+.disc-nav-btn {
+  padding: 8px 12px;
+  background: #fff;
+  border: 1px solid var(--ink);
+  border-radius: 5px;
+  font: 400 9px Silkscreen, monospace;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.disc-count {
+  font: 10px VT323, monospace;
+  color: var(--muted-2);
+}
+
+/* about */
+
+.about-text {
+  margin: 12px 0 0;
+  font: 13px/1.8 Verdana, sans-serif;
+  color: var(--ink-soft);
+}
+
+.about-text:first-of-type {
+  margin-top: 16px;
+}
+
+.tag-row {
+  margin-top: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.tag-pill {
+  padding: 4px 9px;
+  background: #f7f6f3;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  font: 11px Verdana, sans-serif;
+  color: var(--ink);
+}
+
+.linkedin-link {
+  display: inline-block;
+  margin-top: 20px;
+  font: 12px Verdana, sans-serif;
+  color: var(--accent);
+}
+
+/* contact */
+
+.contact-desc {
+  margin: 16px 0 18px;
+  font: 13px/1.8 Verdana, sans-serif;
+  color: var(--ink-soft);
+}
+
+.contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.contact-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 13px;
+  background: #fff;
+  border: 1px solid var(--ink);
+  border-radius: 6px;
+  font: 13px Verdana, sans-serif;
+  color: var(--ink);
+}
+
+.contact-value {
+  margin-left: auto;
+  font: 11px VT323, monospace;
+  color: var(--muted);
+}
+
+/* audio bar */
+
+.audio-bar {
+  border-top: 1px solid rgba(42, 39, 64, .24);
+  background: rgba(247, 246, 243, .72);
+  padding: 13px 20px;
+}
+
+.audio-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.play-btn {
+  width: 38px;
+  height: 38px;
+  flex: none;
+  border: 1px solid var(--ink);
+  border-radius: 50%;
+  background: #fff;
+  font: 13px Verdana, sans-serif;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.track-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.track-name {
+  font: 12px Verdana, sans-serif;
+  color: var(--ink);
+}
+
+.track-progress {
+  height: 4px;
+  background: #ddd9d2;
+  margin-top: 6px;
+}
+
+.progress-fill {
+  width: 34%;
+  height: 100%;
+  background: var(--accent-pink);
+}
+
+.progress-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+  font: 10px VT323, monospace;
+  color: var(--muted-2);
+}

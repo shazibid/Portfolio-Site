@@ -1,0 +1,143 @@
+/* floating overlays on top of the 3D room: topbar badge, mode toggle,
+   tip card, hover chip, meow bubble, rack bar */
+
+.topbar-badge {
+  position: absolute;
+  left: 20px;
+  top: 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 11px;
+  background: rgba(255, 255, 255, .68);
+  border: 1px solid rgba(42, 39, 64, .34);
+  border-radius: 999px;
+  box-shadow: 0 12px 32px rgba(42, 39, 64, .16);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  animation: tipIn .45s ease-out both;
+}
+
+.traffic-lights {
+  display: flex;
+  gap: 5px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid rgba(42, 39, 64, .35);
+}
+
+.dot-pink { background: #ff6fb5; }
+.dot-yellow { background: #ffd76f; }
+.dot-teal { background: #55d3e0; }
+
+.badge-label {
+  font: 400 11px Silkscreen, monospace;
+  color: var(--ink);
+}
+
+.mode-toggle {
+  position: absolute;
+  right: 20px;
+  top: 18px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, .68);
+  border: 1px solid rgba(42, 39, 64, .34);
+  border-radius: 999px;
+  box-shadow: 0 12px 32px rgba(42, 39, 64, .16);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  font: 400 9px Silkscreen, monospace;
+  color: var(--ink);
+  cursor: pointer;
+  animation: tipIn .45s ease-out both;
+}
+
+.tip-card {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  width: 250px;
+  background: rgba(255, 255, 255, .74);
+  border: 1px solid rgba(42, 39, 64, .42);
+  border-radius: 8px;
+  box-shadow: 0 18px 44px rgba(42, 39, 64, .22);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  animation: tipIn .5s ease-out both;
+}
+
+.tip-card-title {
+  padding: 6px 11px;
+  background: rgba(42, 39, 64, .94);
+  font: 400 9px Silkscreen, monospace;
+  color: #f5c9e4;
+  border-radius: 7px 7px 0 0;
+}
+
+.tip-card-body {
+  padding: 12px 13px;
+  font: 12px/1.85 Verdana, sans-serif;
+  color: var(--ink-soft);
+}
+
+.tip-card-footer {
+  padding: 0 13px 11px;
+  font: 10px VT323, monospace;
+  color: var(--muted-2);
+}
+
+.hover-chip {
+  position: absolute;
+  right: 20px;
+  top: 62px;
+  padding: 5px 10px;
+  background: rgba(255, 255, 255, .62);
+  border: 1px solid rgba(42, 39, 64, .22);
+  border-radius: 999px;
+  box-shadow: 0 10px 24px rgba(42, 39, 64, .12);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  font: 400 9px Silkscreen, monospace;
+  color: var(--ink);
+}
+
+.meow-bubble {
+  position: absolute;
+  left: 96px;
+  top: 118px;
+  padding: 7px 13px;
+  background: #fff;
+  border: 2px solid var(--ink);
+  border-radius: 14px 14px 14px 3px;
+  box-shadow: 3px 3px 0 rgba(42, 39, 64, .2);
+  font: 13px Verdana, sans-serif;
+  color: var(--ink);
+  animation: popIn .22s cubic-bezier(.2, .9, .25, 1) both;
+}
+
+.rack-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  animation: tipIn .4s ease-out both;
+}
+
+.rack-pill {
+  padding: 9px 14px;
+  background: rgba(255, 255, 255, .74);
+  border: 1px solid rgba(42, 39, 64, .38);
+  border-radius: 999px;
+  box-shadow: 0 14px 32px rgba(42, 39, 64, .18);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  font: 12px Verdana, sans-serif;
+  color: var(--ink);
+}
