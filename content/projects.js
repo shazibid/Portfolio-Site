@@ -14,9 +14,9 @@ export const projects = [
     ink: '#ffffff',
     meta: 'track 01 · july 2026',
     stack: 'swift · swiftui · xcuitest · github actions',
-    body: 'a tiny always-on-top macos widget that shows what\'s playing in spotify or apple music and controls it without switching apps. no dock icon, no menu bar clutter. it auto-switches between sources and comes in four skins: liquid glass pill, spinning cd, click-wheel ipod, and vinyl.',
-    n1: 'spotify has no queue in its applescript dictionary, so i hand-wrote the oauth flow (loopback http callback server, token store with refresh) and a typed web api client to power the ipod\'s "up next".',
-    n2: 'media control sits behind a protocol with an injectable fake: 58 unit tests plus 3 xcuitest smoke tests, with unit tests gating every pr in ci.'
+    body: 'a floating now-playing widget for macos. it shows what\'s playing in spotify or apple music and lets you skip and pause without switching apps. it lives in the menu bar or the dock, whichever you prefer, as one small borderless window that stays on top. it follows whichever app is playing and comes in four skins: a liquid glass pill, a spinning cd, a spinning vinyl record, and a click-wheel ipod.',
+    n1: 'spotify\'s applescript interface can\'t report a queue, so i wrote the oauth login (authorization code with pkce, loopback callback server, token store with refresh) and a typed web api client to power the ipod skin\'s "up next". apple music gets its queue out of the box.',
+    n2: 'media control sits behind a protocol with an injectable fake: unit tests cover parsing, pkce, the oauth loopback server, token storage and queue matching without needing either app running. xcuitest smoke tests drive the real app, and ci gates every pr.'
   },
   {
     title: 'se-sitrep',
