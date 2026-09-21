@@ -414,3 +414,44 @@ document.addEventListener('keydown', (e) => {
   if (!photoModal.hidden || !welcomeModal.hidden) return; // those handle their own Escape
   if (state.zone !== '' || state.navOpen) back();
 });
+
+// mailto: silently does nothing on phones with no mail app set up (or inside in-app
+// browsers), so every email link also copies the address and says so
+const toast = document.createElement('div');
+toast.className = 'toast';
+toast.setAttribute('role', 'status');
+toast.hidden = true;
+document.body.appendChild(toast);
+let toastTimer;
+
+function copyText(text) {
+  if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text);
+  return new Promise((resolve, reject) => {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;opacity:0';
+    document.body.appendChild(ta);
+    ta.select();
+    let ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) { /* fall through */ }
+    ta.remove();
+    ok ? resolve() : reject(new Error('copy failed'));
+  });
+}
+
+function showToast(msg) {
+  clearTimeout(toastTimer);
+  toast.textContent = msg;
+  toast.hidden = false;
+  toastTimer = setTimeout(() => { toast.hidden = true; }, 3200);
+}
+
+document.addEventListener('click', (e) => {
+  const link = e.target.closest && e.target.closest('a[href^="mailto:"]');
+  if (!link) return;
+  const address = link.getAttribute('href').slice('mailto:'.length);
+  copyText(address).then(
+    () => showToast('email copied: ' + address),
+    () => showToast(address)
+  );
+}); // no preventDefault: the mail app still opens where there is one
