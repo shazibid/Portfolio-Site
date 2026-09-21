@@ -15,6 +15,11 @@ say hi.
   - `projects.js` — the 5 rack "discs". Each entry drives **both** the 3D
     case art and the case-study text in the panel, so adding/reordering a
     project is a single edit here.
+  - `photos.js` — the corkboard photos (files in `assets/photos/`): captions,
+    optional long popups; feeds the About panel grid
+  - `corkboard.js` — where photos, album sleeves and PNG stickers (files in
+    `assets/stickers/`, named `sticker-1.png`…; album covers in `assets/albums/`)
+    sit on the 3D board
   - `tracks.js` — the fake "now playing" track per project
 - `app.js` — state machine wiring the panel/overlay UI to the 3D room (plain
   JS module, no framework)

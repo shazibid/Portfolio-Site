@@ -64,6 +64,7 @@
   background: rgba(255, 255, 255, .74);
   border: 1px solid rgba(42, 39, 64, .42);
   border-radius: 8px;
+  overflow: hidden;
   box-shadow: 0 18px 44px rgba(42, 39, 64, .22);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -139,5 +140,67 @@
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   font: 12px Verdana, sans-serif;
+  color: var(--ink);
+}
+
+/* short landscape viewports (phones on their side) */
+@media (max-height: 500px) {
+  .topbar-badge,
+  .mode-toggle {
+    top: 10px;
+  }
+
+  .topbar-badge { left: max(12px, env(safe-area-inset-left)); }
+  .mode-toggle { right: max(12px, env(safe-area-inset-right)); }
+
+  .hover-chip {
+    top: 48px;
+    right: max(12px, env(safe-area-inset-right));
+  }
+
+  .tip-card {
+    left: max(12px, env(safe-area-inset-left));
+    bottom: 10px;
+    width: 200px;
+  }
+
+  .tip-card-body {
+    padding: 8px 10px;
+    font-size: 11px;
+    line-height: 1.5;
+  }
+
+  .tip-card-footer { display: none; }
+
+  .meow-bubble {
+    left: 80px;
+    top: 60px;
+  }
+
+  .rack-bar { bottom: 10px; }
+}
+
+/* lofi controls, bottom-right of the room; slides left when the side panel is open */
+.lofi-dock {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, .74);
+  border: 1px solid rgba(42, 39, 64, .42);
+  border-radius: 999px;
+  box-shadow: 0 12px 32px rgba(42, 39, 64, .18);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: right .52s cubic-bezier(.2, .85, .2, 1);
+}
+
+.lofi-dock.panel-open { right: min(556px, calc(100vw - 260px)); }
+
+.dock-title {
+  font: 400 9px Silkscreen, monospace;
   color: var(--ink);
 }

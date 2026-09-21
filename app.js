@@ -3,6 +3,8 @@
 // its public methods (selectZone, backOne, deselect, setMode).
 import { projects } from './content/projects.js';
 import { tracks } from './content/tracks.js';
+import { photos } from './content/photos.js';
+import { createLofi } from './room/lofi.js';
 
 const room = document.getElementById('room');
 
@@ -13,9 +15,12 @@ const el = {
   meowBubble: document.getElementById('meowBubble'),
   rackBar: document.getElementById('rackBar'),
   rackBackBtn: document.getElementById('rackBackBtn'),
+  computerBar: document.getElementById('computerBar'),
+  computerBackBtn: document.getElementById('computerBackBtn'),
   resumeOverlay: document.getElementById('resumeOverlay'),
   resumeCloseBtn: document.getElementById('resumeCloseBtn'),
   panel: document.getElementById('panel'),
+  folderTab: document.getElementById('folderTab'),
   panelKicker: document.getElementById('panelKicker'),
   panelBackBtn: document.getElementById('panelBackBtn'),
   panelIdle: document.getElementById('panelIdle'),
@@ -36,10 +41,71 @@ const el = {
   prevDiscBtn: document.getElementById('prevDiscBtn'),
   nextDiscBtn: document.getElementById('nextDiscBtn'),
   playBtn: document.getElementById('playBtn'),
-  trackName: document.getElementById('trackName')
+  musicToggle: document.getElementById('musicToggle'),
+  npVinyl: document.getElementById('npVinyl'),
+  dockVinyl: document.getElementById('dockVinyl'),
+  dockToggle: document.getElementById('dockToggle'),
+  dockVol: document.getElementById('dockVol'),
+  lofiDock: document.getElementById('lofiDock'),
+  previewVolume: document.getElementById('previewVolume'),
+  audioBar: document.getElementById('audioBar'),
+  volBtn: document.getElementById('volBtn'),
+  volSlider: document.getElementById('volSlider'),
+  trackName: document.getElementById('trackName'),
+  trackLink: document.getElementById('trackLink'),
+  trackTime: document.getElementById('trackTime'),
+  progressFill: document.getElementById('progressFill')
 };
 
-const state = { zone: '', index: -1, mode: 'day', playing: false };
+// background lo-fi loop: starts on the first click anywhere (browsers block
+// autoplay) unless the visitor turned it off with the toggle
+const lofi = createLofi();
+let lofiMuted = false;
+function syncMusicBtn() {
+  [el.musicToggle, el.dockToggle].forEach((b) => { b.textContent = lofi.on ? '❚❚' : '▶'; });
+  [el.npVinyl, el.dockVinyl].forEach((v) => v.classList.toggle('spinning', lofi.on));
+  if (room.setLofi) room.setLofi(lofi.on);
+}
+[el.musicToggle, el.dockToggle].forEach((b) => b.addEventListener('click', (e) => {
+  e.stopPropagation();
+  lofiMuted = lofi.on;
+  if (lofi.on) lofi.stop(); else lofi.start();
+  syncMusicBtn();
+}));
+el.dockVol.addEventListener('input', () => lofi.setVolume(el.dockVol.value / 100));
+lofi.setVolume(el.dockVol.value / 100);
+document.addEventListener('pointerdown', (e) => {
+  if (e.target === el.musicToggle || e.target === el.dockToggle) return;
+  if (!lofiMuted && !lofi.on) lofi.start().then(syncMusicBtn);
+}, { once: true });
+
+const audio = new Audio();
+audio.preload = 'none';
+audio.volume = 0.5; // previews are mastered loud; start at half
+
+function syncVolume() {
+  el.volSlider.value = audio.muted ? 0 : Math.round(audio.volume * 100);
+  el.volBtn.textContent = audio.muted || audio.volume === 0 ? '🔇' : '🔊';
+}
+el.volSlider.addEventListener('input', () => {
+  audio.volume = el.volSlider.value / 100;
+  audio.muted = audio.volume === 0;
+  syncVolume();
+});
+el.volBtn.addEventListener('click', () => {
+  if (audio.volume === 0) audio.volume = 0.5;
+  audio.muted = !audio.muted && audio.volume > 0;
+  syncVolume();
+});
+syncVolume();
+let loadedSrc = '';
+
+function fmt(sec) {
+  const s = Math.floor(sec || 0);
+  return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+}
+
+const state = { zone: '', index: -1, mode: 'day', playing: false, navOpen: false };
 
 function go(zone, index) {
   return () => {
@@ -48,6 +114,7 @@ function go(zone, index) {
 }
 
 function back() {
+  if (state.zone === '' && state.navOpen) { state.navOpen = false; render(); return; }
   if (room.backOne) room.backOne();
   else if (room.deselect) room.deselect();
 }
@@ -72,12 +139,26 @@ el.playBtn.addEventListener('click', () => {
   render();
 });
 
+audio.addEventListener('timeupdate', () => {
+  const dur = audio.duration || 30;
+  el.progressFill.style.width = (audio.currentTime / dur * 100) + '%';
+  el.trackTime.textContent = fmt(audio.currentTime) + ' / ' + fmt(dur);
+});
+audio.addEventListener('ended', () => { state.playing = false; render(); });
+
 el.navWork.addEventListener('click', go('work', 0));
 el.navAbout.addEventListener('click', go('about'));
 el.navResume.addEventListener('click', go('resume'));
 el.navContact.addEventListener('click', go('contact'));
 
+el.folderTab.addEventListener('click', () => { state.navOpen = true; render(); });
+// clicking the room itself (off the panel) closes the site map
+room.addEventListener('click', () => {
+  if (state.zone === '' && state.navOpen) { state.navOpen = false; render(); }
+});
+
 el.panelBackBtn.addEventListener('click', back);
+el.computerBackBtn.addEventListener('click', back);
 el.rackBackBtn.addEventListener('click', back);
 el.resumeCloseBtn.addEventListener('click', back);
 el.resumeOverlay.addEventListener('click', (e) => { if (e.target === el.resumeOverlay) back(); });
@@ -87,6 +168,7 @@ el.nextDiscBtn.addEventListener('click', step(1));
 room.addEventListener('zoneselect', (e) => {
   state.zone = e.detail.zone;
   state.index = e.detail.index;
+  state.navOpen = false;
   if (e.detail.zone === 'work') state.playing = true;
   render();
 });
@@ -96,12 +178,16 @@ room.addEventListener('zonehover', (e) => {
   el.hoverChip.textContent = zone === 'work' ? 'disc 0' + (e.detail.index + 1)
     : zone === 'cat' ? 'pet the cat'
     : zone === 'butterfly' ? 'shoo'
+    : zone === 'computer' ? 'log on'
     : zone || 'hover something';
 });
 
 let meowTimer;
 room.addEventListener('catmeow', () => {
   clearTimeout(meowTimer);
+  // hide + reflow so the pop-in animation replays on every meow, even mid-bubble
+  el.meowBubble.hidden = true;
+  void el.meowBubble.offsetWidth;
   el.meowBubble.hidden = false;
   meowTimer = setTimeout(() => { el.meowBubble.hidden = true; }, 1400);
 });
@@ -113,10 +199,12 @@ function render() {
   el.tipCard.hidden = zone !== '';
   el.rackBar.hidden = zone !== 'rack';
   el.resumeOverlay.hidden = zone !== 'resume';
+  el.computerBar.hidden = zone !== 'computer';
 
   // the panel only shows for the three content zones; at idle it stays off-screen
   // so the room is unobstructed, and the rack/resume have their own dedicated UI.
-  const panelVisible = zone === 'work' || zone === 'about' || zone === 'contact';
+  const panelVisible = (zone === '' && state.navOpen) || zone === 'work' || zone === 'about' || zone === 'contact';
+  el.folderTab.hidden = !(zone === '' && !state.navOpen);
   el.panel.classList.toggle('panel-hidden', !panelVisible);
 
   el.panelIdle.hidden = zone !== '';
@@ -141,8 +229,90 @@ function render() {
     el.discCount.textContent = 'disc ' + ((index < 0 ? 0 : index) + 1) + ' of ' + projects.length;
   }
 
-  el.trackName.textContent = zone === 'work' ? tracks[index >= 0 ? index : 0] : 'nothing playing';
+  const track = zone === 'work' ? tracks[index >= 0 ? index : 0] : null;
+  el.audioBar.hidden = zone === '';
+  el.lofiDock.classList.toggle('panel-open', panelVisible);
+  el.trackName.textContent = track ? track.title + ' — ' + track.artist : lofi.on ? 'lofi loop — shazi\'s room' : 'nothing playing';
+  el.trackLink.hidden = !track;
+  if (track) el.trackLink.href = track.link;
+
+  if (track && track.preview !== loadedSrc) {
+    loadedSrc = track.preview;
+    audio.src = track.preview;
+    el.progressFill.style.width = '0%';
+    el.trackTime.textContent = '0:00 / 0:30';
+  }
+  if (playing && track) {
+    audio.play().catch(() => { state.playing = false; render(); }); // autoplay blocked or offline
+  } else {
+    audio.pause();
+  }
+  el.previewVolume.hidden = !track; // the volume slider only drives song previews
+  lofi.duck(!!(playing && track));
   el.playBtn.textContent = playing ? '❚❚' : '▶';
 }
 
 render();
+
+// corkboard photos: polaroid grid in the about panel, click for the popup
+const photoModal = document.getElementById('photoModal');
+const photoImg = document.getElementById('photoImg');
+const photoCaption = document.getElementById('photoCaption');
+const photoStory = document.getElementById('photoStory');
+
+function closePhoto() { photoModal.hidden = true; }
+
+function openPhoto(p) {
+  photoImg.src = `./assets/photos/${p.file}`;
+  photoImg.alt = p.caption;
+  photoCaption.textContent = p.caption;
+  photoStory.textContent = p.story || '';
+  photoStory.hidden = !p.story;
+  photoModal.hidden = false;
+}
+
+const corkGrid = document.getElementById('corkGrid');
+photos.forEach((p) => {
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'cork-photo' + (p.size === 'big' ? ' cork-photo-big' : '');
+  btn.style.setProperty('--tilt', `${p.tilt || 0}deg`);
+  const frame = document.createElement('div');
+  frame.className = 'cork-photo-frame';
+  const img = document.createElement('img');
+  img.src = `./assets/photos/${p.file}`;
+  img.alt = p.caption;
+  img.loading = 'lazy';
+  img.addEventListener('error', () => img.remove()); // no file yet: keep the striped placeholder
+  frame.appendChild(img);
+  const cap = document.createElement('div');
+  cap.className = 'cork-photo-caption';
+  cap.textContent = p.caption;
+  if (p.story) {
+    const more = document.createElement('span');
+    more.className = 'cork-photo-more';
+    more.textContent = ' · read more';
+    cap.appendChild(more);
+  }
+  btn.append(frame, cap);
+  btn.addEventListener('click', () => openPhoto(p));
+  corkGrid.appendChild(btn);
+});
+
+document.getElementById('photoClose').addEventListener('click', closePhoto);
+photoModal.addEventListener('click', (e) => { if (e.target === photoModal) closePhoto(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !photoModal.hidden) closePhoto(); });
+
+// first-visit welcome popup; remembered in localStorage so it only shows once
+const welcomeModal = document.getElementById('welcomeModal');
+const welcomeClose = document.getElementById('welcomeClose');
+function closeWelcome() {
+  welcomeModal.hidden = true;
+  try { localStorage.setItem('shazi-welcomed', '1'); } catch (e) { /* private mode */ }
+}
+let welcomed = false;
+try { welcomed = !!localStorage.getItem('shazi-welcomed'); } catch (e) { /* private mode */ }
+if (!welcomed) welcomeModal.hidden = false;
+welcomeClose.addEventListener('click', closeWelcome);
+welcomeModal.addEventListener('click', (e) => { if (e.target === welcomeModal) closeWelcome(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !welcomeModal.hidden) closeWelcome(); });

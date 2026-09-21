@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>shazi.exe — Shazi Bidarian</title>
 <meta name="description" content="Shazi Bidarian — software engineering portfolio, presented as an interactive desktop room.">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,9 +11,15 @@
 <link rel="stylesheet" href="./styles/chrome.css">
 <link rel="stylesheet" href="./styles/resume.css">
 <link rel="stylesheet" href="./styles/panel.css">
+<link rel="stylesheet" href="./styles/corkboard.css">
 </head>
 <body>
 <main class="shazi-room">
+  <div class="rotate-gate" role="alert">
+    <div class="rotate-phone" aria-hidden="true"></div>
+    <div class="rotate-title">turn your phone sideways</div>
+    <div class="rotate-sub">this room is best seen in landscape</div>
+  </div>
   <div class="room-stage">
     <div class="room-3d">
       <cd-room-v2 id="room"></cd-room-v2>
@@ -29,13 +35,18 @@
 
       <button class="mode-toggle" id="modeToggle" type="button">☾ night</button>
 
+      <button class="folder-tab" id="folderTab" type="button" aria-label="open help">
+        <span class="folder-tab-icon"></span>
+        <span class="folder-tab-label">help</span>
+      </button>
+
       <div class="tip-card" id="tipCard">
         <div class="tip-card-title">TIP</div>
         <div class="tip-card-body">
           click the <b>discs</b> for projects<br>
           the <b>corkboard</b> for about me<br>
           the <b>papers</b> for my resume<br>
-          the <b>mail tray</b> to say hi
+          the <b>mail tray</b> to say hi<br>the <b>laptop</b> to log on
         </div>
         <div class="tip-card-footer">say hi to the kitty :D</div>
       </div>
@@ -43,6 +54,18 @@
       <div class="hover-chip" id="hoverChip">hover something</div>
 
       <div class="meow-bubble" id="meowBubble" hidden>meow</div>
+
+      <div class="lofi-dock" id="lofiDock">
+        <span class="np-vinyl" id="dockVinyl"></span>
+        <div class="dock-title">lofi loop</div>
+        <button class="np-toggle" id="dockToggle" type="button" aria-label="toggle background music">▶</button>
+        <input class="vol-slider" id="dockVol" type="range" min="0" max="100" value="80" aria-label="lofi volume">
+      </div>
+
+      <div class="rack-bar" id="computerBar" hidden>
+        <div class="rack-pill">click the tabs</div>
+        <button class="btn btn-dark" id="computerBackBtn" type="button">room</button>
+      </div>
 
       <div class="rack-bar" id="rackBar" hidden>
         <div class="rack-pill">pick a disc</div>
@@ -89,19 +112,20 @@
                 <span class="resume-row-meta">Jan – Apr 2026</span>
               </div>
               <ul class="resume-list">
-                <li>Built a serverless Gmail ingestion pipeline on AWS Lambda (OAuth, incremental sync, orchestration, S3) to extract structured purchase data from retailer emails and surface products in-app.</li>
-                <li>Developed a product-image extraction pipeline combining domain filtering, heuristic image scoring, deduplication, and Gemini Vision validation.</li>
-                <li>Built an evaluation harness benchmarking 5 image-generation models across 26 product photos with automated HTML/CSV scoring reports.</li>
+                <li>Architected a serverless Gmail ingestion pipeline on AWS Lambda (OAuth, incremental sync, orchestration, S3) that turns retailer emails into structured purchase data and surfaces the products in-app.</li>
+                <li>Built a product-image extraction pipeline (domain filtering, heuristic scoring, deduplication, Gemini Vision validation) to isolate wearable fashion items from noisy email HTML.</li>
+                <li>Designed an evaluation harness that benchmarked 5 image-generation models across 26 product photos with automated HTML/CSV scoring reports; the winner now powers lay-flat product imagery.</li>
                 <li>Improved recommendation and visual-search retrieval with bounding-box ranking, category-aware similarity sorting, and intelligent backfill.</li>
+                <li>Owned the full user shopping experience UI, from design through implementation.</li>
               </ul>
               <div class="resume-row resume-row-tight">
                 <span><b>Arity</b> — Machine Learning Project Fellow</span>
                 <span class="resume-row-meta">Aug – Dec 2025</span>
               </div>
               <ul class="resume-list">
-                <li>Cleaned and engineered features from 60,000+ iOS and Android telematics events.</li>
-                <li>Built and evaluated 12+ K-Means, DBSCAN and HDBSCAN workflows, identifying a 3-cluster K-Means model separating 90° turns, U-turns and lane changes.</li>
-                <li>Led a 6-person team through sprint planning, model review and milestone delivery with Arity stakeholders.</li>
+                <li>Cleaned and engineered features from 60,000+ iOS and Android telematics events, converting raw GPS and sensor fields into modeling variables.</li>
+                <li>Built and evaluated 12+ K-Means, DBSCAN and HDBSCAN workflows; a 3-cluster K-Means model separated 90° turns, U-turns and lane changes without labels.</li>
+                <li>Led a 6-person team through sprint planning, model review and milestone delivery with Arity stakeholders, translating clusters into readable turn labels. The team's supervised random forest reached 96% accuracy.</li>
               </ul>
             </div>
 
@@ -141,6 +165,14 @@
         <section class="panel-section" id="panelIdle">
           <div class="idle-title">look around</div>
           <p class="idle-desc">there's no nav bar. everything in the room is a page — click the thing you want.</p>
+          <div class="now-playing">
+            <span class="np-vinyl" id="npVinyl"></span>
+            <div class="np-info">
+              <div class="np-label">now playing</div>
+              <div class="np-title">lofi loop — shazi's room</div>
+            </div>
+            <button class="np-toggle" id="musicToggle" type="button" aria-label="toggle background music">▶</button>
+          </div>
           <div class="nav-list">
             <button class="nav-item" id="navWork" type="button">
               <span class="nav-icon nav-icon-rack"></span>
@@ -190,9 +222,10 @@
           <p class="about-text">cs student at ucsd, landed in tech after my failed art career (jk i was lowkey poppin). i thought, what if i brought my art to life?</p>
           <p class="about-text">my favorite projects are the ones that let me take full control over the creative and applicative directions. working at aesthetic, i was in charge of the full user shopping experience ui, and now i can confidently manage designs/redesigns from top to bottom, front to back. i am unstoppable.</p>
           <p class="about-text">before i transferred to ucsd, i joined break through tech's 2025-2026 cohort and fell in love with machine learning and data science. now i am working on some new projects where i can incorperate smart ai into my fun and interactive software. keep an eye out for new interesting projects popping up on my github. if you see anything you like and have fun with, please lmk!!</p>
+          <div class="cork-grid" id="corkGrid"></div>
           <div class="tag-row">
             <span class="tag-pill">ucsd cs '27</span>
-            <span class="tag-pill">gpa 3.6</span>
+            <span class="tag-pill">gpa 3.7</span>
             <span class="tag-pill">break through tech ai</span>
             <span class="tag-pill">san diego</span>
           </div>
@@ -211,19 +244,53 @@
         </section>
       </div>
 
-      <div class="audio-bar">
+      <div class="audio-bar" id="audioBar">
         <div class="audio-row">
           <button class="play-btn" id="playBtn" type="button">▶</button>
           <div class="track-info">
             <div class="track-name" id="trackName">nothing playing</div>
-            <div class="track-progress"><div class="progress-fill"></div></div>
-            <div class="progress-meta"><span>spotify preview · 30s</span><span>0:10 / 0:30</span></div>
+            <div class="track-progress"><div class="progress-fill" id="progressFill"></div></div>
+            <div class="progress-meta"><span><a id="trackLink" href="#" target="_blank" rel="noopener">full song ↗</a> · 30s preview</span><span id="trackTime">0:00 / 0:30</span></div>
+          </div>
+          <div class="volume" id="previewVolume">
+            <button class="vol-btn" id="volBtn" type="button" aria-label="mute">🔊</button>
+            <input class="vol-slider" id="volSlider" type="range" min="0" max="100" value="50" aria-label="volume">
           </div>
         </div>
       </div>
     </aside>
   </div>
 </main>
+
+<div class="welcome-modal" id="welcomeModal" hidden>
+  <div class="welcome-card" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
+    <div class="welcome-titlebar">
+      <div class="traffic-lights">
+        <span class="dot dot-pink"></span>
+        <span class="dot dot-yellow"></span>
+        <span class="dot dot-teal"></span>
+      </div>
+      <span class="welcome-file">welcome.txt</span>
+    </div>
+    <div class="welcome-body">
+      <div class="welcome-title" id="welcomeTitle">hi, i'm shazi :)</div>
+      <p class="welcome-text">this is my portfolio, built as a little room. there's no nav bar, so click around: the discs for projects, the corkboard for about me, the papers for my resume, the mail tray to say hi.</p>
+      <p class="welcome-text welcome-sub">turn the sound on for lofi. the cat is just there.</p>
+      <button class="welcome-btn" id="welcomeClose" type="button">let me in</button>
+    </div>
+  </div>
+</div>
+
+<div class="photo-modal" id="photoModal" hidden>
+  <figure class="photo-card" role="dialog" aria-modal="true" aria-labelledby="photoCaption">
+    <button class="photo-close" id="photoClose" type="button" aria-label="close photo">×</button>
+    <img id="photoImg" alt="">
+    <figcaption>
+      <div class="photo-caption" id="photoCaption"></div>
+      <p class="photo-story" id="photoStory" hidden></p>
+    </figcaption>
+  </figure>
+</div>
 
 <script src="https://unpkg.com/three@0.150.1/build/three.min.js"></script>
 <script type="module" src="./room/cd-room-v2.js"></script>

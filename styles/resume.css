@@ -11,8 +11,9 @@
 }
 
 .resume-window {
-  width: 640px;
-  height: 600px;
+  width: min(640px, calc(100vw - 24px));
+  height: min(600px, calc(100vh - 24px));
+  height: min(600px, calc(100dvh - 24px));
   display: flex;
   flex-direction: column;
   background: #fff;
@@ -158,3 +159,4 @@
 .resume-skills b {
   color: var(--ink);
 }
+
