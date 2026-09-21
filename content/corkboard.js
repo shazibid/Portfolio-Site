@@ -13,10 +13,9 @@ export const photoSpots = [
 ];
 
 // Album sleeves: drop cover images into assets/albums/ with these names. A slot whose file
-// doesn't exist yet stays empty. Keep the lower right (x > 0.2, y < -0.55) light: the room's
-// lamp shade sits in front of it.
+// doesn't exist yet stays empty. Keep the lower right (x > 0.2, y < -0.55) clear: the room's
+// lamp shade sits in front of it and would cut off a cover.
 export const albumSpots = [
-  { file: 'adele.jpg',   x: -0.35, y: -0.62, rot:  0.08, size: 0.4 },
   { file: 'album-1.jpg', x: -0.6,  y:  0.36, rot: -0.1,  size: 0.3 },
   { file: 'album-2.jpg', x: -1.0,  y: -0.52, rot: -0.06, size: 0.34 },
   { file: 'album-3.jpg', x:  0.98, y:  0.3,  rot:  0.07, size: 0.32 },
@@ -56,7 +55,5 @@ export const vineSpots = [
 // Photobooth strips: drop images into assets/photos/ (e.g. strip-1.jpg). `w` is the strip's
 // width; height follows the image. A slot whose file doesn't exist yet stays empty.
 export const stripSpots = [
-  { file: 'strip-1.jpg', x: 0.12, y: -0.42, rot:  0.05, w: 0.3 },
-  { file: 'strip-2.jpg', x: 1.22, y: -0.02, rot: -0.06, w: 0.3 },
-  { file: 'strip-3.jpg', x: -1.0, y:  0.2,  rot:  0.08, w: 0.28 }
+  { file: 'strip-1.jpg', x: 0.12, y: -0.42, rot:  0.05, w: 0.3 }
 ];
