@@ -20,13 +20,16 @@
   -webkit-backdrop-filter: blur(18px);
   display: flex;
   flex-direction: column;
-  transition: transform .52s cubic-bezier(.2, .85, .2, 1);
+  transition: transform .52s cubic-bezier(.2, .85, .2, 1), visibility 0s;
   transform: translateX(0);
 }
 
 .panel.panel-hidden {
-  /* full width + right offset, so no sliver of it peeks in at the screen edge */
-  transform: translateX(calc(100% + 40px));
+  /* slide fully off (width + its right offset, which grows with the phone's safe-area inset),
+     then switch visibility off once the slide ends so no edge or shadow ever peeks in */
+  transform: translateX(calc(100% + 40px + env(safe-area-inset-right, 0px)));
+  visibility: hidden;
+  transition: transform .52s cubic-bezier(.2, .85, .2, 1), visibility 0s .52s;
   pointer-events: none;
 }
 
