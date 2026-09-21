@@ -1,4 +1,4 @@
-// What the laptop screen shows. Two tabs; edit the lists freely.
+// What the laptop screen shows. List tabs take items; the 'workspace' tab is drawn by room/screen.js.
 export const tabs = [
   {
     name: 'games',
@@ -19,5 +19,6 @@ export const tabs = [
       ['figure skating', 'since 19 · falling gracefully on purpose'],
       ['beaches + big cities', 'sand now, skyline next · post-grad goal: nyc']
     ]
-  }
+  },
+  { name: 'workspace', kind: 'workspace' }
 ];

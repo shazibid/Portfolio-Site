@@ -146,7 +146,7 @@ audio.addEventListener('timeupdate', () => {
 });
 audio.addEventListener('ended', () => { state.playing = false; render(); });
 
-el.navWork.addEventListener('click', go('work', 0));
+el.navWork.addEventListener('click', go('rack'));
 el.navAbout.addEventListener('click', go('about'));
 el.navResume.addEventListener('click', go('resume'));
 el.navContact.addEventListener('click', go('contact'));

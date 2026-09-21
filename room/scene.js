@@ -147,9 +147,17 @@ export function buildScene(T, host) {
   const armBase = new T.Mesh(new T.CylinderGeometry(0.075, 0.085, 0.05, 20), darkMat);
   armBase.name = 'tonearmBase'; armBase.position.set(0.68, 0.365, -0.55); player.add(armBase);
   const arm = new T.Mesh(new T.BoxGeometry(0.03, 0.025, 0.84), chromeMat);
-  arm.name = 'tonearm'; arm.position.set(0.365, 0.42, -0.275); arm.rotation.y = -0.85; arm.castShadow = true; player.add(arm);
+  arm.name = 'tonearm'; arm.castShadow = true; player.add(arm);
   const headshell = new T.Mesh(new T.BoxGeometry(0.09, 0.03, 0.12), darkMat);
-  headshell.name = 'tonearmHead'; headshell.position.set(0.06, 0.42, 0.06); headshell.rotation.y = -0.85; player.add(headshell);
+  headshell.name = 'tonearmHead'; player.add(headshell);
+  // swing the arm about its pivot: the stylus lands on the grooves (outside the label) when a record is on, else it rests off the platter
+  const setTonearm = (playing) => {
+    const a = playing ? -0.4 : -0.1, s = Math.sin(a), c = Math.cos(a);
+    arm.position.set(0.68 + s * 0.42, 0.42, -0.55 + c * 0.42);
+    headshell.position.set(0.68 + s * 0.84, 0.42, -0.55 + c * 0.84);
+    arm.rotation.y = headshell.rotation.y = a;
+  };
+  setTonearm(false);
 
   const dispCanvas = document.createElement('canvas'); dispCanvas.width = 320; dispCanvas.height = 96;
   const dispTex = new T.CanvasTexture(dispCanvas); dispTex.encoding = T.sRGBEncoding;
@@ -373,7 +381,7 @@ export function buildScene(T, host) {
     meshes: { pane, bulb, lapScreen, glow },
     screenUI,
     textures: { dayTex, nightTex },
-    disc, discHole, discArt, vinylTex, setPlayerDisplay,
+    disc, discHole, discArt, vinylTex, setPlayerDisplay, setTonearm,
     cat, catHit,
     bf, bfPos, bfTarget, bfLand, wings, bfHit,
     cases, caseHits, pickables, zoneTargets, zoneLift, rackBack,
