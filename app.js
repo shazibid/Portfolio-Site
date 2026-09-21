@@ -80,6 +80,7 @@ el.navContact.addEventListener('click', go('contact'));
 el.panelBackBtn.addEventListener('click', back);
 el.rackBackBtn.addEventListener('click', back);
 el.resumeCloseBtn.addEventListener('click', back);
+el.resumeOverlay.addEventListener('click', (e) => { if (e.target === el.resumeOverlay) back(); });
 el.prevDiscBtn.addEventListener('click', step(-1));
 el.nextDiscBtn.addEventListener('click', step(1));
 
@@ -113,10 +114,9 @@ function render() {
   el.rackBar.hidden = zone !== 'rack';
   el.resumeOverlay.hidden = zone !== 'resume';
 
-  // the panel shows for idle (site-map nav) and for the three content zones;
-  // it stays off-screen only while browsing the rack or reading the resume,
-  // which have their own dedicated UI.
-  const panelVisible = zone === '' || zone === 'work' || zone === 'about' || zone === 'contact';
+  // the panel only shows for the three content zones; at idle it stays off-screen
+  // so the room is unobstructed, and the rack/resume have their own dedicated UI.
+  const panelVisible = zone === 'work' || zone === 'about' || zone === 'contact';
   el.panel.classList.toggle('panel-hidden', !panelVisible);
 
   el.panelIdle.hidden = zone !== '';

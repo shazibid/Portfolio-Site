@@ -33,6 +33,10 @@ export function attachController(host, T, refs) {
   });
   el.addEventListener('pointerleave', () => { ndc.set(-2, -2); mx = 0; my = 0; });
   el.addEventListener('click', () => {
+    // hover picking is off while a page is open, so any click on the room
+    // itself (i.e. off the panel) steps back out
+    if (sel.zone && sel.zone !== 'rack') { host.backOne(); return; }
+    if (sel.zone === 'rack' && !hoverZone) { host.backOne(); return; }
     if (hoverZone === 'butterfly') { flyUntil = t + 3.4; return; }
     if (hoverZone === 'cat') {
       meow();
