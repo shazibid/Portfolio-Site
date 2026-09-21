@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>shazi.exe — Shazi Bidarian</title>
+<meta name="description" content="Shazi Bidarian — software engineering portfolio, presented as an interactive desktop room.">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<main class="shazi-room">
+  <div class="room-stage">
+    <div class="room-3d">
+      <cd-room-v2 id="room"></cd-room-v2>
+
+      <div class="topbar-badge">
+        <div class="traffic-lights">
+          <span class="dot dot-pink"></span>
+          <span class="dot dot-yellow"></span>
+          <span class="dot dot-teal"></span>
+        </div>
+        <div class="badge-label">shazi.exe</div>
+      </div>
+
+      <button class="mode-toggle" id="modeToggle" type="button">☾ night</button>
+
+      <div class="tip-card" id="tipCard">
+        <div class="tip-card-title">TIP</div>
+        <div class="tip-card-body">
+          click the <b>discs</b> for projects<br>
+          the <b>corkboard</b> for about me<br>
+          the <b>papers</b> for my resume<br>
+          the <b>mail tray</b> to say hi
+        </div>
+        <div class="tip-card-footer">say hi to the kitty :D</div>
+      </div>
+
+      <div class="hover-chip" id="hoverChip">hover something</div>
+
+      <div class="meow-bubble" id="meowBubble" hidden>meow</div>
+
+      <div class="rack-bar" id="rackBar" hidden>
+        <div class="rack-pill">pick a disc</div>
+        <button class="btn btn-dark" id="rackBackBtn" type="button">room</button>
+      </div>
+    </div>
+
+    <div class="resume-overlay" id="resumeOverlay" hidden>
+      <div class="resume-window">
+        <div class="resume-titlebar">
+          <div class="resume-filename">shazi-bidarian-swe.pdf</div>
+          <div class="resume-filesize">1 page · 96 kb</div>
+          <div class="spacer"></div>
+          <a class="resume-download-btn" href="./uploads/Shazi Bidarian Resume - SWE Intern.pdf">download</a>
+          <button class="resume-close-btn" id="resumeCloseBtn" type="button">×</button>
+        </div>
+        <div class="resume-body">
+          <div class="resume-doc">
+            <div class="resume-head">
+              <div>
+                <div class="resume-name">Shazi Bidarian</div>
+                <div class="resume-role">Software Engineering · San Diego, CA</div>
+              </div>
+              <div class="resume-contact">shazi.bid23@gmail.com · (949) 245-4377<br>github.com/shazibid · linkedin.com/in/shazi-bidarian</div>
+            </div>
+
+            <div class="resume-section">
+              <div class="resume-section-title">EDUCATION</div>
+              <div class="resume-row">
+                <span><b>University of California, San Diego</b> — B.S. Computer Science, GPA 3.6</span>
+                <span class="resume-row-meta">Sep 2025 – Dec 2027</span>
+              </div>
+              <div class="resume-edu-sub">Database System Principles · Systems Programming · Artificial Intelligence · Machine Learning Algorithms</div>
+              <div class="resume-row">
+                <span><b>Saddleback &amp; Irvine Valley College</b> — A.S. Computer Science, GPA 3.8</span>
+                <span class="resume-row-meta">Aug 2022 – Jun 2025</span>
+              </div>
+            </div>
+
+            <div class="resume-section">
+              <div class="resume-section-title">EXPERIENCE</div>
+              <div class="resume-row">
+                <span><b>Aesthetic</b> — Software Engineering Intern</span>
+                <span class="resume-row-meta">Jan – Apr 2026</span>
+              </div>
+              <ul class="resume-list">
+                <li>Built a serverless Gmail ingestion pipeline on AWS Lambda (OAuth, incremental sync, orchestration, S3) to extract structured purchase data from retailer emails and surface products in-app.</li>
+                <li>Developed a product-image extraction pipeline combining domain filtering, heuristic image scoring, deduplication, and Gemini Vision validation.</li>
+                <li>Built an evaluation harness benchmarking 5 image-generation models across 26 product photos with automated HTML/CSV scoring reports.</li>
+                <li>Improved recommendation and visual-search retrieval with bounding-box ranking, category-aware similarity sorting, and intelligent backfill.</li>
+              </ul>
+              <div class="resume-row resume-row-tight">
+                <span><b>Arity</b> — Machine Learning Project Fellow</span>
+                <span class="resume-row-meta">Aug – Dec 2025</span>
+              </div>
+              <ul class="resume-list">
+                <li>Cleaned and engineered features from 60,000+ iOS and Android telematics events.</li>
+                <li>Built and evaluated 12+ K-Means, DBSCAN and HDBSCAN workflows, identifying a 3-cluster K-Means model separating 90° turns, U-turns and lane changes.</li>
+                <li>Led a 6-person team through sprint planning, model review and milestone delivery with Arity stakeholders.</li>
+              </ul>
+            </div>
+
+            <div class="resume-section">
+              <div class="resume-section-title">PROJECTS</div>
+              <div class="resume-projects">
+                <b>Miniplayer</b> — macOS now-playing widget in Swift/SwiftUI; hand-written Spotify OAuth, 58 unit tests + 3 XCUITest smoke tests in CI.<br>
+                <b>SE-Sitrep</b> — Agile team manager, 10-person team, Class Project Winner; Postgres schema/RLS and modular frontend.<br>
+                <b>CareFi</b> — AI dermatology web service, Best Coast Hackathon Winner; three-angle photo workflow with duplicate detection.
+              </div>
+            </div>
+
+            <div class="resume-section">
+              <div class="resume-section-title">SKILLS &amp; CERTIFICATIONS</div>
+              <div class="resume-skills">
+                <b>Languages:</b> Python, C++, C, Java, TypeScript, JavaScript, SQL, Swift<br>
+                <b>Frameworks &amp; Web:</b> React, React Native/Expo, Next.js, Node.js, SwiftUI, HTML, CSS, Tailwind<br>
+                <b>Cloud, Data &amp; Systems:</b> AWS (Lambda, S3), Supabase/Postgres, REST APIs, OAuth 2.0, POSIX/Unix, GitHub API<br>
+                <b>AI &amp; ML:</b> Gemini Vision, Scikit-learn, Pandas, NumPy<br>
+                <b>Testing &amp; Tools:</b> Vitest, Playwright, XCUITest, ESLint, Git, GitHub Actions, CI/CD<br>
+                <b>Certifications:</b> Break Through Tech AI · Cornell Tech: Machine Learning Foundations (Aug 2025)
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <aside class="panel" id="panel">
+      <div class="panel-header">
+        <div class="panel-kicker" id="panelKicker">the room</div>
+        <div class="spacer"></div>
+        <button class="btn btn-outline" id="panelBackBtn" type="button">◀ room</button>
+      </div>
+
+      <div class="panel-body">
+        <section class="panel-section" id="panelIdle">
+          <div class="idle-title">look around</div>
+          <p class="idle-desc">there's no nav bar. everything in the room is a page — click the thing you want.</p>
+          <div class="nav-list">
+            <button class="nav-item" id="navWork" type="button">
+              <span class="nav-icon nav-icon-rack"></span>
+              the rack — 5 projects
+              <span class="nav-tag">work</span>
+            </button>
+            <button class="nav-item" id="navAbout" type="button">
+              <span class="nav-icon nav-icon-about"></span>
+              the corkboard
+              <span class="nav-tag">about</span>
+            </button>
+            <button class="nav-item" id="navResume" type="button">
+              <span class="nav-icon nav-icon-resume"></span>
+              papers on the desk
+              <span class="nav-tag">resume</span>
+            </button>
+            <button class="nav-item" id="navContact" type="button">
+              <span class="nav-icon nav-icon-contact"></span>
+              the mail tray
+              <span class="nav-tag">say hi</span>
+            </button>
+          </div>
+          <div class="idle-footnote">the cat is not a page. the cat is just there.</div>
+        </section>
+
+        <section class="panel-section" id="panelWork" hidden>
+          <div class="section-eyebrow" id="workMeta"></div>
+          <div class="section-title" id="workTitle"></div>
+          <div class="work-stack" id="workStack"></div>
+          <div class="work-body" id="workBody"></div>
+          <div class="work-note work-note-pink" id="workNote1"></div>
+          <div class="work-note work-note-teal" id="workNote2"></div>
+          <div class="work-links">
+            <a class="link-btn link-btn-dark" href="https://github.com/shazibid">github</a>
+            <a class="link-btn link-btn-outline" href="#" id="workCta">case study →</a>
+          </div>
+          <div class="disc-nav">
+            <button class="disc-nav-btn" id="prevDiscBtn" type="button">prev</button>
+            <span class="disc-count" id="discCount">disc 1 of 5</span>
+            <button class="disc-nav-btn" id="nextDiscBtn" type="button">next</button>
+          </div>
+        </section>
+
+        <section class="panel-section" id="panelAbout" hidden>
+          <div class="section-eyebrow">the corkboard</div>
+          <div class="section-title">about me</div>
+          <p class="about-text">cs student at ucsd, landed in tech after my failed art career (jk i was lowkey poppin). i thought, what if i brought my art to life?</p>
+          <p class="about-text">my favorite projects are the ones that let me take full control over the creative and applicative directions. working at aesthetic, i was in charge of the full user shopping experience ui, and now i can confidently manage designs/redesigns from top to bottom, front to back. i am unstoppable.</p>
+          <p class="about-text">before i transferred to ucsd, i joined break through tech's 2025-2026 cohort and fell in love with machine learning and data science. now i am working on some new projects where i can incorperate smart ai into my fun and interactive software. keep an eye out for new interesting projects popping up on my github. if you see anything you like and have fun with, please lmk!!</p>
+          <div class="tag-row">
+            <span class="tag-pill">ucsd cs '27</span>
+            <span class="tag-pill">gpa 3.6</span>
+            <span class="tag-pill">break through tech ai</span>
+            <span class="tag-pill">san diego</span>
+          </div>
+          <a class="linkedin-link" href="https://linkedin.com/in/shazi-bidarian">more on linkedin</a>
+        </section>
+
+        <section class="panel-section" id="panelContact" hidden>
+          <div class="section-eyebrow">the mail tray</div>
+          <div class="section-title">say hi</div>
+          <p class="contact-desc">open to summer 2027 swe internships and new grad roles (my grad date is anything you want it to be, june for new grad or dec for intern, im flexible), and always up for talking about native apps, weird pipelines, or which apple product is the best (ipad, duh).</p>
+          <div class="contact-list">
+            <a class="contact-row" href="mailto:shazi.bid23@gmail.com">email<span class="contact-value">shazi.bid23@gmail.com</span></a>
+            <a class="contact-row" href="https://github.com/shazibid">github<span class="contact-value">@shazibid</span></a>
+            <a class="contact-row" href="https://linkedin.com/in/shazi-bidarian">linkedin<span class="contact-value">/shazi-bidarian</span></a>
+          </div>
+        </section>
+      </div>
+
+      <div class="audio-bar">
+        <div class="audio-row">
+          <button class="play-btn" id="playBtn" type="button">▶</button>
+          <div class="track-info">
+            <div class="track-name" id="trackName">nothing playing</div>
+            <div class="track-progress"><div class="progress-fill"></div></div>
+            <div class="progress-meta"><span>spotify preview · 30s</span><span>0:10 / 0:30</span></div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<script src="https://unpkg.com/three@0.150.1/build/three.min.js"></script>
+<script src="./cd-room-v2.js"></script>
+<script src="./app.js"></script>
+</body>
+</html>
