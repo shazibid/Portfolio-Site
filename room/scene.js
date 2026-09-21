@@ -15,8 +15,6 @@ import {
 export function buildScene(T, host) {
   const W = host.clientWidth || 900, H = host.clientHeight || 620;
 
-  // the controller steps this down (never below 1.5x) if frames run slow
-  const coarse = matchMedia('(pointer: coarse)').matches;
   const renderer = new T.WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
   renderer.setSize(W, H);
@@ -25,7 +23,6 @@ export function buildScene(T, host) {
   renderer.toneMappingExposure = 0.86;
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = T.PCFSoftShadowMap;
-  renderer.shadowMap.autoUpdate = !coarse; // on touch devices the controller redraws shadows every other frame
   const el = renderer.domElement;
   el.style.cssText = 'display:block;width:100%;height:100%;cursor:default;touch-action:none';
 
