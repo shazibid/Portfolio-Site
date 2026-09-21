@@ -9,7 +9,8 @@ export const photoSpots = [
   { file: 'bestfriend.jpg',  x:  1.5,  y:  0.5,  rot: -0.08, s: 0.54 },
   { file: 'family.jpg',      x: -0.98, y: -0.08, rot: -0.05, s: 0.5 },
   { file: 'cat.jpg',         x: -0.32, y: -0.02, rot:  0.08, s: 0.44 },
-  { file: 'coffee.jpg',      x:  1.6,  y: -0.3,  rot:  0.05, s: 0.42 }
+  { file: 'coffee.jpg',      x:  1.6,  y: -0.3,  rot:  0.05, s: 0.42 },
+  { file: 'art.jpg',         x: -0.93, y: -0.99, rot: -0.05, s: 0.48 }
 ];
 
 // Album sleeves: drop cover images into assets/albums/ with these names. A slot whose file
@@ -24,7 +25,7 @@ export const albumSpots = [
 ];
 
 // The nyc postcard: a goal, pinned low on the board (clear of the lamp, lower right).
-export const nycCard = { x: -0.62, y: -1.0, rot: -0.04, w: 0.72 };
+export const nycCard = { x: -0.3, y: -1.02, rot: -0.04, w: 0.72 };
 
 // WebP stickers: drop files into assets/stickers/ with these names. A slot whose file
 // doesn't exist yet is just empty. `w` is the sticker's width; height follows the image.
@@ -55,5 +56,6 @@ export const vineSpots = [
 // Photobooth strips: drop images into assets/photos/ (e.g. strip-1.jpg). `w` is the strip's
 // width; height follows the image. A slot whose file doesn't exist yet stays empty.
 export const stripSpots = [
-  { file: 'strip-1.jpg', x: 0.12, y: -0.42, rot:  0.05, w: 0.3 }
+  { file: 'strip-1.jpg', x: 0.12, y: -0.42, rot:  0.05, w: 0.3 },
+  { file: 'sketches.jpg', x: 0.33, y: -1.0, rot: 0.05, w: 0.38 }
 ];
