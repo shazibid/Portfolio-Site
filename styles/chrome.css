@@ -92,41 +92,6 @@
   animation: tipIn .45s ease-out both;
 }
 
-.tip-card {
-  position: absolute;
-  left: 20px;
-  bottom: 20px;
-  width: 250px;
-  background: rgba(255, 255, 255, .74);
-  border: 1px solid rgba(42, 39, 64, .42);
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 18px 44px rgba(42, 39, 64, .22);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  animation: tipIn .5s ease-out both;
-}
-
-.tip-card-title {
-  padding: 6px 11px;
-  background: rgba(42, 39, 64, .94);
-  font: 400 9px Silkscreen, monospace;
-  color: #f5c9e4;
-  border-radius: 7px 7px 0 0;
-}
-
-.tip-card-body {
-  padding: 12px 13px;
-  font: 12px/1.85 Verdana, sans-serif;
-  color: var(--ink-soft);
-}
-
-.tip-card-footer {
-  padding: 0 13px 11px;
-  font: 10px VT323, monospace;
-  color: var(--muted-2);
-}
-
 .hover-chip {
   position: absolute;
   right: 20px;
@@ -167,18 +132,6 @@
   animation: tipIn .4s ease-out both;
 }
 
-.rack-pill {
-  padding: 9px 14px;
-  background: rgba(255, 255, 255, .74);
-  border: 1px solid rgba(42, 39, 64, .38);
-  border-radius: 999px;
-  box-shadow: 0 14px 32px rgba(42, 39, 64, .18);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  font: 12px Verdana, sans-serif;
-  color: var(--ink);
-}
-
 /* short landscape viewports (phones on their side) */
 @media (max-height: 500px) {
   .topbar-badge,
@@ -193,20 +146,6 @@
     top: 48px;
     right: max(12px, env(safe-area-inset-right));
   }
-
-  .tip-card {
-    left: max(12px, env(safe-area-inset-left));
-    bottom: 10px;
-    width: 200px;
-  }
-
-  .tip-card-body {
-    padding: 8px 10px;
-    font-size: 11px;
-    line-height: 1.5;
-  }
-
-  .tip-card-footer { display: none; }
 
   .meow-bubble {
     left: 80px;

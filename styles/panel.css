@@ -125,17 +125,6 @@
 
 /* idle nav */
 
-.now-playing {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 14px;
-  padding: 10px 12px;
-  background: #fff;
-  border: 1px solid var(--ink);
-  border-radius: 6px;
-}
-
 .np-vinyl {
   width: 34px;
   height: 34px;
@@ -148,18 +137,6 @@
 .np-vinyl.spinning { animation: spin 3s linear infinite; }
 
 @keyframes spin { to { transform: rotate(360deg); } }
-
-.np-info { flex: 1; min-width: 0; }
-
-.np-label {
-  font: 10px VT323, monospace;
-  color: var(--muted-2);
-}
-
-.np-title {
-  font: 12px Verdana, sans-serif;
-  color: var(--ink);
-}
 
 .np-toggle {
   width: 32px;

@@ -12,7 +12,7 @@ export function attachController(host, T, refs) {
     meshes: { pane, bulb, lapScreen, glow },
     screenUI,
     textures: { dayTex, nightTex },
-    disc, discHole, discArt, vinylTex, setPlayerDisplay,
+    disc, discHole, discArt, vinylTex, setPlayerDisplay, setTonearm,
     cat,
     bf, bfPos, bfTarget, bfLand, wings,
     cases, caseHits, pickables, zoneTargets, zoneLift,
@@ -35,6 +35,7 @@ export function attachController(host, T, refs) {
     const album = sel.zone === 'work' && discArt[sel.index];
     const show = !!album || lofiOn;
     disc.visible = show; discHole.visible = show;
+    setTonearm(show);
     setPlayerDisplay(album ? sel.index : lofiOn ? -2 : -1);
     disc.material.map = album || vinylTex;
     disc.material.needsUpdate = true;
@@ -138,6 +139,8 @@ export function attachController(host, T, refs) {
     }
   }
 
+  // fraction of the wide shot's distance kept (smaller = closer)
+  const WIDE_ZOOM = 0.84, WIDE_ZOOM_SHORT = 0.68;
   let raf, t = 0, intro = 1;
   const camPos = new T.Vector3(1.0, 5.6, 26);
   const camLook = CAM.wide.look.clone();
@@ -188,7 +191,17 @@ export function attachController(host, T, refs) {
       z.group.scale.setScalar(s);
     });
 
-    const goal = CAM[sel.zone || 'wide'] || CAM.wide;
+    let goal = CAM[sel.zone || 'wide'] || CAM.wide;
+    if (!sel.zone) {
+      // the wide shot leaves a lot of empty wall/floor around the room, most of all on short
+      // landscape phones, so pull it in toward what it looks at
+      const short = host.clientHeight <= 500;
+      const k = short ? WIDE_ZOOM_SHORT : WIDE_ZOOM;
+      // aim a touch higher so the room sits lower, clear of the pills across the top
+      const rise = new T.Vector3(0, short ? 0.6 : 0.4, 0);
+      const look = goal.look.clone().add(rise);
+      goal = { pos: look.clone().lerp(goal.pos.clone().add(rise), k), look };
+    }
     const driftX = sel.zone ? 0.22 : 1.3;
     const driftY = sel.zone ? 0.1 : 0.55;
     const lerp = intro > 0 ? 0.035 : 0.055;

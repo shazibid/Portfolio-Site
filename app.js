@@ -10,7 +10,6 @@ const room = document.getElementById('room');
 
 const el = {
   modeToggle: document.getElementById('modeToggle'),
-  tipCard: document.getElementById('tipCard'),
   hoverChip: document.getElementById('hoverChip'),
   meowBubble: document.getElementById('meowBubble'),
   rackBar: document.getElementById('rackBar'),
@@ -44,8 +43,6 @@ const el = {
   prevDiscBtn: document.getElementById('prevDiscBtn'),
   nextDiscBtn: document.getElementById('nextDiscBtn'),
   playBtn: document.getElementById('playBtn'),
-  musicToggle: document.getElementById('musicToggle'),
-  npVinyl: document.getElementById('npVinyl'),
   dockVinyl: document.getElementById('dockVinyl'),
   dockToggle: document.getElementById('dockToggle'),
   dockVol: document.getElementById('dockVol'),
@@ -61,24 +58,24 @@ const el = {
 };
 
 // background lo-fi loop: starts on the first click anywhere (browsers block
-// autoplay) unless the visitor turned it off with the toggle
+// autoplay) unless the visitor turned it off with the dock's toggle
 const lofi = createLofi();
 let lofiMuted = false;
 function syncMusicBtn() {
-  [el.musicToggle, el.dockToggle].forEach((b) => { b.textContent = lofi.on ? '❚❚' : '▶'; });
-  [el.npVinyl, el.dockVinyl].forEach((v) => v.classList.toggle('spinning', lofi.on));
+  el.dockToggle.textContent = lofi.on ? '❚❚' : '▶';
+  el.dockVinyl.classList.toggle('spinning', lofi.on);
   if (room.setLofi) room.setLofi(lofi.on);
 }
-[el.musicToggle, el.dockToggle].forEach((b) => b.addEventListener('click', (e) => {
+el.dockToggle.addEventListener('click', (e) => {
   e.stopPropagation();
   lofiMuted = lofi.on;
   if (lofi.on) lofi.stop(); else lofi.start();
   syncMusicBtn();
-}));
+});
 el.dockVol.addEventListener('input', () => lofi.setVolume(el.dockVol.value / 100));
 lofi.setVolume(el.dockVol.value / 100);
 document.addEventListener('pointerdown', (e) => {
-  if (e.target === el.musicToggle || e.target === el.dockToggle) return;
+  if (e.target === el.dockToggle) return;
   if (!lofiMuted && !lofi.on) lofi.start().then(syncMusicBtn);
 }, { once: true });
 
@@ -199,7 +196,6 @@ function render() {
   const { zone, index, mode, playing } = state;
   const project = projects[index >= 0 ? index : 0];
 
-  el.tipCard.hidden = zone !== '';
   el.rackBar.hidden = zone !== 'rack';
   el.resumeOverlay.hidden = zone !== 'resume';
   el.computerBar.hidden = zone !== 'computer';
@@ -241,9 +237,9 @@ function render() {
   }
 
   const track = zone === 'work' ? tracks[index >= 0 ? index : 0] : null;
-  el.audioBar.hidden = zone === '';
+  el.audioBar.hidden = !track; // the panel player is only for a disc's song preview; lofi lives in the dock
   el.lofiDock.classList.toggle('panel-open', panelVisible);
-  el.trackName.textContent = track ? track.title + ' — ' + track.artist : lofi.on ? 'lofi loop — shazi\'s room' : 'nothing playing';
+  el.trackName.textContent = track ? track.title + ' — ' + track.artist : '';
   el.trackLink.hidden = !track;
   if (track) el.trackLink.href = track.link;
 
@@ -314,16 +310,13 @@ document.getElementById('photoClose').addEventListener('click', closePhoto);
 photoModal.addEventListener('click', (e) => { if (e.target === photoModal) closePhoto(); });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !photoModal.hidden) closePhoto(); });
 
-// first-visit welcome popup; remembered in localStorage so it only shows once
+// welcome popup: shown on every load/refresh
 const welcomeModal = document.getElementById('welcomeModal');
 const welcomeClose = document.getElementById('welcomeClose');
 function closeWelcome() {
   welcomeModal.hidden = true;
-  try { localStorage.setItem('shazi-welcomed', '1'); } catch (e) { /* private mode */ }
 }
-let welcomed = false;
-try { welcomed = !!localStorage.getItem('shazi-welcomed'); } catch (e) { /* private mode */ }
-if (!welcomed) welcomeModal.hidden = false;
+welcomeModal.hidden = false;
 welcomeClose.addEventListener('click', closeWelcome);
 welcomeModal.addEventListener('click', (e) => { if (e.target === welcomeModal) closeWelcome(); });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !welcomeModal.hidden) closeWelcome(); });
