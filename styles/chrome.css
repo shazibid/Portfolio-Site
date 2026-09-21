@@ -8,7 +8,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 8px 11px;
+  padding: 8px 14px;
   background: rgba(255, 255, 255, .68);
   border: 1px solid rgba(42, 39, 64, .34);
   border-radius: 999px;
@@ -17,22 +17,6 @@
   -webkit-backdrop-filter: blur(14px);
   animation: tipIn .45s ease-out both;
 }
-
-.traffic-lights {
-  display: flex;
-  gap: 5px;
-}
-
-.dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  border: 1px solid rgba(42, 39, 64, .35);
-}
-
-.dot-pink { background: #ff6fb5; }
-.dot-yellow { background: #ffd76f; }
-.dot-teal { background: #55d3e0; }
 
 .badge-label {
   font: 400 11px Silkscreen, monospace;
@@ -94,8 +78,9 @@
 
 .hover-chip {
   position: absolute;
-  right: 20px;
-  top: 62px;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
   padding: 5px 10px;
   background: rgba(255, 255, 255, .62);
   border: 1px solid rgba(42, 39, 64, .22);
@@ -130,7 +115,10 @@
   justify-content: center;
   gap: 10px;
   animation: tipIn .4s ease-out both;
+  pointer-events: none; /* the bar spans the full width and sits over the lofi dock: only its buttons take clicks */
 }
+
+.rack-bar > * { pointer-events: auto; }
 
 /* short landscape viewports (phones on their side) */
 @media (max-height: 500px) {
@@ -142,10 +130,7 @@
   .topbar-badge { left: max(12px, env(safe-area-inset-left)); }
   .top-actions { right: max(12px, env(safe-area-inset-right)); }
 
-  .hover-chip {
-    top: 48px;
-    right: max(12px, env(safe-area-inset-right));
-  }
+  .hover-chip { bottom: 10px; }
 
   .meow-bubble {
     left: 80px;

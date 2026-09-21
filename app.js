@@ -79,6 +79,9 @@ el.dockToggle.addEventListener('click', (e) => {
 });
 el.dockVol.addEventListener('input', () => lofi.setVolume(el.dockVol.value / 100));
 lofi.setVolume(el.dockVol.value / 100);
+// a song preview ducks the loop to ~18%, which makes the slider seem dead: lift it while dragging
+el.dockVol.addEventListener('pointerdown', () => lofi.adjusting(true));
+['pointerup', 'pointercancel', 'blur'].forEach((ev) => el.dockVol.addEventListener(ev, () => lofi.adjusting(false)));
 document.addEventListener('pointerdown', (e) => {
   if (e.target === el.dockToggle) return;
   if (!lofiMuted && !lofi.on) lofi.start().then(syncMusicBtn);
@@ -178,22 +181,41 @@ room.addEventListener('zoneselect', (e) => {
   render();
 });
 
+// the chip falls back to the disc being viewed, so stepping prev/next keeps it in sync
+const currentDiscLabel = () => state.zone === 'work' ? 'disc 0' + ((state.index < 0 ? 0 : state.index) + 1) : '';
+
+// touch screens have no hover, so the idle prompt says tap
+const idleLabel = matchMedia('(hover: none)').matches ? 'tap something' : 'hover something';
+el.hoverChip.textContent = idleLabel;
+
 room.addEventListener('zonehover', (e) => {
   const zone = e.detail.zone;
   el.hoverChip.textContent = zone === 'work' ? 'disc 0' + (e.detail.index + 1)
     : zone === 'cat' ? 'pet the cat'
     : zone === 'butterfly' ? 'shoo'
     : zone === 'computer' ? 'log on'
-    : zone || 'hover something';
+    : zone || currentDiscLabel() || idleLabel;
 });
 
-let meowTimer;
+let meowTimer, meowFrame;
+// keep the bubble beside the cat's head (the camera moves, so follow it while shown)
+function placeMeowBubble() {
+  const b = el.meowBubble;
+  if (b.hidden || !room.getCatScreen) return;
+  const p = room.getCatScreen();
+  const base = b.offsetParent ? b.offsetParent.getBoundingClientRect() : { left: 0, top: 0 };
+  b.style.left = Math.round(p.x - base.left + 8) + 'px';
+  b.style.top = Math.round(p.y - base.top - b.offsetHeight - 6) + 'px';
+  meowFrame = requestAnimationFrame(placeMeowBubble);
+}
 room.addEventListener('catmeow', () => {
   clearTimeout(meowTimer);
   // hide + reflow so the pop-in animation replays on every meow, even mid-bubble
   el.meowBubble.hidden = true;
   void el.meowBubble.offsetWidth;
   el.meowBubble.hidden = false;
+  cancelAnimationFrame(meowFrame);
+  placeMeowBubble();
   meowTimer = setTimeout(() => { el.meowBubble.hidden = true; }, 1400);
 });
 
@@ -255,6 +277,7 @@ function render() {
     el.workBody.textContent = project.body;
     el.workNote1.textContent = project.n1;
     el.workNote2.textContent = project.n2;
+    el.hoverChip.textContent = currentDiscLabel();
     el.discCount.textContent = 'disc ' + ((index < 0 ? 0 : index) + 1) + ' of ' + projects.length;
   }
 

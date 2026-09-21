@@ -2,8 +2,8 @@
 
 .panel {
   position: absolute;
-  /* starts below the mode-toggle/hover-chip pills in the top-right corner —
-     those two floating controls occupy roughly the same corner the panel
+  /* starts below the mode-toggle pill in the top-right corner —
+     that floating control occupies roughly the same corner the panel
      docks into, so if the panel started at top:18px like they do, it would
      sit on top of them and swallow their clicks whenever it's open
      (including at idle, now that the panel shows there too). */

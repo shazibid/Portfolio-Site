@@ -10,7 +10,7 @@ export function createLofi() {
   const hz = (m) => 440 * Math.pow(2, (m - 69) / 12);
 
   let ctx = null, master = null, duckGain = null, noiseBuf = null;
-  let timer = 0, step = 0, nextTime = 0, running = false, ducked = false;
+  let timer = 0, step = 0, nextTime = 0, running = false, ducked = false, adjusting = false;
 
   function init() {
     ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -79,6 +79,10 @@ export function createLofi() {
     }
   }
 
+  function applyDuck() {
+    if (ctx) duckGain.gain.setTargetAtTime(ducked && !adjusting ? 0.18 : 1, ctx.currentTime, adjusting ? 0.1 : 0.4);
+  }
+
   let vol = 1; // listener's volume (0–1), on top of the mix level below
   function level() { return running ? 0.7 * vol : 0; }
 
@@ -102,7 +106,12 @@ export function createLofi() {
     // drop the loop under a song preview so they don't fight
     duck(on) {
       ducked = on;
-      if (ctx) duckGain.gain.setTargetAtTime(on ? 0.18 : 1, ctx.currentTime, 0.4);
+      applyDuck();
+    },
+    // while the listener drags the volume slider, lift the duck so the change is audible
+    adjusting(on) {
+      adjusting = on;
+      applyDuck();
     },
     setVolume(v) {
       vol = v;

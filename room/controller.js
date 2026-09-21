@@ -47,6 +47,16 @@ export function attachController(host, T, refs) {
   let panelInset = 0, panelInsetGoal = 0;
   host.setPanelInset = (px) => { panelInsetGoal = Math.max(0, px || 0); };
 
+  // screen position (px, relative to the host) of the cat's head, for anchoring the meow bubble
+  const catPt = new T.Vector3();
+  host.getCatScreen = () => {
+    camera.updateMatrixWorld();
+    catPt.set(0.4, 0.55, 0);
+    cat.localToWorld(catPt).project(camera);
+    const r = renderer.domElement.getBoundingClientRect();
+    return { x: r.left + (catPt.x + 1) / 2 * r.width, y: r.top + (1 - catPt.y) / 2 * r.height };
+  };
+
   const setPointer = (e) => {
     const r = el.getBoundingClientRect();
     mx = ((e.clientX - r.left) / r.width) * 2 - 1;
@@ -103,26 +113,26 @@ export function attachController(host, T, refs) {
     mode = m === 'night' ? 'night' : 'day';
     const night = mode === 'night';
     // night: no sun (its shadows pointed away from the lamp), minimal fill, lamp does the work
-    sun.intensity = night ? 0 : 1.75;
+    sun.intensity = night ? 0 : 2.05;
     sun.castShadow = !night;
     lampLight.castShadow = night;
     scene.traverse((o) => {
       if (!o.material) return;
       (Array.isArray(o.material) ? o.material : [o.material]).forEach((m) => { m.needsUpdate = true; });
     });
-    amb.intensity = night ? 0.05 : 0.3;
-    hemi.intensity = night ? 0.09 : 0.4;
+    amb.intensity = night ? 0.05 : 0.22;
+    hemi.intensity = night ? 0.09 : 0.3;
     lampLight.intensity = night ? 3.6 : 1.4;
     lampLight.distance = night ? 8 : 9;
     pool.intensity = 0; // the old detached spotlight lit the floor from nowhere; the lamp's point light replaces it
     glow.material.opacity = night ? 0.6 : 0;
     shadeMat.emissiveIntensity = night ? 0.85 : 0;
     bulb.material.color.set(night ? 0xfff2d6 : 0xf3ead8);
-    renderer.toneMappingExposure = night ? 1.25 : 0.86;
-    scene.background.set(night ? 0x241f33 : 0xd3c7e3);
-    wallMat.color.set(night ? 0x453d5c : 0xdccfeb);
-    floorMat.color.set(night ? 0x6a5040 : 0xd6b083);
-    woodMat.color.set(night ? 0x8a6543 : 0xcf9a5c);
+    renderer.toneMappingExposure = night ? 1.25 : 0.9;
+    scene.background.set(night ? 0x241f33 : 0xc3b5d6);
+    wallMat.color.set(night ? 0x453d5c : 0xcfc0e0);
+    floorMat.color.set(night ? 0x6a5040 : 0xc99e6f);
+    woodMat.color.set(night ? 0x8a6543 : 0xc08848);
     pane.material.map = night ? nightTex : dayTex;
     pane.material.needsUpdate = true;
     lapScreen.material.color.set(night ? 0xb4bccf : 0xffffff);
@@ -199,11 +209,11 @@ export function attachController(host, T, refs) {
       // depth (left in front, same order as the closed rack) or the covers z-fight
       const openX = (i - 2) * 1.02, openZ = 0.34 - i * 0.03;
       c.position.x = baseX + (openX - baseX) * d.open;
-      c.position.z = baseZ + (openZ - baseZ) * d.open;
-      c.position.y = d.baseY + d.lift * 0.62 + d.open * 0.1;
-      // a lifted case only rises, in the closed stack and fanned out alike: any yaw/tilt
-      // pushes an edge through a neighbour's plane, and the covers would intersect
-      c.rotation.x = d.baseRotX * (1 - d.open * 0.72);
+      c.position.z = baseZ + (openZ - baseZ) * d.open + d.lift * 0.6;
+      c.position.y = d.baseY + d.lift * 0.3 + d.open * 0.1;
+      // a lifted case is drawn out toward the viewer and tipped up to face them, as if held
+      // in hand. It only moves forward and never sideways, so it can't cut through a neighbour
+      c.rotation.x = d.baseRotX * (1 - d.open * 0.72) + d.lift * 0.2;
       c.rotation.y = 0;
 
       const h = caseHits[i];
