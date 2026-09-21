@@ -15,11 +15,10 @@ import {
 export function buildScene(T, host) {
   const W = host.clientWidth || 900, H = host.clientHeight || 620;
 
-  // touch devices start at 1.5x (a 3x phone screen would otherwise draw 4x the pixels for little
-  // visible gain); the controller lowers it further if frames run slow
+  // the controller steps this down (never below 1.5x) if frames run slow
   const coarse = matchMedia('(pointer: coarse)').matches;
   const renderer = new T.WebGLRenderer({ antialias: true });
-  renderer.setPixelRatio(Math.min(devicePixelRatio, coarse ? 1.5 : 2));
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
   renderer.setSize(W, H);
   renderer.outputEncoding = T.sRGBEncoding;
   renderer.toneMapping = T.ACESFilmicToneMapping;
