@@ -192,6 +192,17 @@ room.addEventListener('catmeow', () => {
   meowTimer = setTimeout(() => { el.meowBubble.hidden = true; }, 1400);
 });
 
+// tell the room how much of its right side the panel covers so it centers the focused
+// object in the space that's left
+let panelShown = false;
+function syncPanelInset(visible = panelShown) {
+  panelShown = visible;
+  if (!room.setPanelInset) return;
+  const gap = parseFloat(getComputedStyle(el.panel).right) || 0;
+  room.setPanelInset(visible ? el.panel.offsetWidth + gap : 0);
+}
+window.addEventListener('resize', () => syncPanelInset());
+
 function render() {
   const { zone, index, mode, playing } = state;
   const project = projects[index >= 0 ? index : 0];
@@ -205,6 +216,7 @@ function render() {
   const panelVisible = (zone === '' && state.navOpen) || zone === 'work' || zone === 'about' || zone === 'contact';
   el.folderTab.hidden = !(zone === '' && !state.navOpen);
   el.panel.classList.toggle('panel-hidden', !panelVisible);
+  syncPanelInset(panelVisible);
 
   el.panelIdle.hidden = zone !== '';
   el.panelWork.hidden = zone !== 'work';

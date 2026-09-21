@@ -15,7 +15,7 @@ export function attachController(host, T, refs) {
     disc, discHole, discArt, vinylTex, setPlayerDisplay, setTonearm,
     cat,
     bf, bfPos, bfTarget, bfLand, wings,
-    cases, caseHits, pickables, zoneTargets, zoneLift,
+    cases, caseHits, pickables, zoneTargets, zoneLift, zoneSubjects,
     CAM
   } = refs;
 
@@ -41,6 +41,11 @@ export function attachController(host, T, refs) {
     disc.material.needsUpdate = true;
   }
   host.setLofi = (on) => { lofiOn = !!on; syncDisc(); };
+
+  // pixels on the right covered by the side panel: the view is shifted so the zone in focus
+  // centers in the space left of it (eased in the tick so it slides over with the camera)
+  let panelInset = 0, panelInsetGoal = 0;
+  host.setPanelInset = (px) => { panelInsetGoal = Math.max(0, px || 0); };
 
   const setPointer = (e) => {
     const r = el.getBoundingClientRect();
@@ -141,6 +146,28 @@ export function attachController(host, T, refs) {
 
   // fraction of the wide shot's distance kept (smaller = closer)
   const WIDE_ZOOM = 0.84, WIDE_ZOOM_SHORT = 0.68;
+  // How much of the frame width a zone's subject fills in its resting close-up, measured by
+  // projecting its bounds through a copy of the camera at that shot (cached per aspect ratio).
+  const fitCam = new T.PerspectiveCamera();
+  const fitBox = new T.Box3(), fitPt = new T.Vector3();
+  const spanCache = {};
+  function zoneSpan(zone) {
+    const key = zone + ':' + camera.aspect.toFixed(3);
+    if (key in spanCache) return spanCache[key];
+    const subject = zoneSubjects[zone], shot = CAM[zone];
+    if (!subject || !shot) return (spanCache[key] = 0);
+    fitBox.setFromObject(subject);
+    fitCam.fov = camera.fov; fitCam.aspect = camera.aspect; fitCam.near = camera.near; fitCam.far = camera.far;
+    fitCam.position.copy(shot.pos); fitCam.lookAt(shot.look);
+    fitCam.updateProjectionMatrix(); fitCam.updateMatrixWorld(true);
+    let lo = Infinity, hi = -Infinity;
+    for (let i = 0; i < 8; i++) {
+      fitPt.set(i & 1 ? fitBox.max.x : fitBox.min.x, i & 2 ? fitBox.max.y : fitBox.min.y, i & 4 ? fitBox.max.z : fitBox.min.z)
+        .project(fitCam);
+      lo = Math.min(lo, fitPt.x); hi = Math.max(hi, fitPt.x);
+    }
+    return (spanCache[key] = (hi - lo) / 2); // NDC spans 2, so this is a fraction of the frame width
+  }
   let raf, t = 0, intro = 1;
   const camPos = new T.Vector3(1.0, 5.6, 26);
   const camLook = CAM.wide.look.clone();
@@ -191,6 +218,10 @@ export function attachController(host, T, refs) {
       z.group.scale.setScalar(s);
     });
 
+    panelInset += (panelInsetGoal - panelInset) * 0.1;
+    if (Math.abs(panelInsetGoal - panelInset) < 0.5) panelInset = panelInsetGoal;
+    const vw = host.clientWidth, vh = host.clientHeight;
+
     let goal = CAM[sel.zone || 'wide'] || CAM.wide;
     if (!sel.zone) {
       // the wide shot leaves a lot of empty wall/floor around the room, most of all on short
@@ -201,6 +232,12 @@ export function attachController(host, T, refs) {
       const rise = new T.Vector3(0, short ? 0.6 : 0.4, 0);
       const look = goal.look.clone().add(rise);
       goal = { pos: look.clone().lerp(goal.pos.clone().add(rise), k), look };
+    }
+    if (sel.zone && panelInset > 0 && vw) {
+      // centered in the space beside the panel isn't enough if the shot fills the whole frame:
+      // back off until the subject fits in what's left (with a little margin)
+      const f = Math.max(1, zoneSpan(sel.zone) / (0.82 * (1 - panelInset / vw)));
+      goal = { pos: goal.look.clone().lerp(goal.pos, f), look: goal.look };
     }
     const driftX = sel.zone ? 0.22 : 1.3;
     const driftY = sel.zone ? 0.1 : 0.55;
@@ -213,6 +250,9 @@ export function attachController(host, T, refs) {
     camLook.lerp(goal.look, lerp);
     camera.position.copy(camPos);
     camera.lookAt(camLook);
+
+    if (panelInset > 0 && vw && vh) camera.setViewOffset(vw, vh, panelInset / 2, 0, vw, vh);
+    else if (camera.view && camera.view.enabled) { camera.clearViewOffset(); }
 
     if (disc.visible) disc.rotation.z += 0.015; // deliberately slower than a real 33rpm so it reads as a gentle spin
 

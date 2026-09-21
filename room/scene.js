@@ -343,7 +343,8 @@ export function buildScene(T, host) {
     wide: { pos: new T.Vector3(0.3, 3.9, 14.2), look: new T.Vector3(0.2, 2.2, -1.8) },
     work: { pos: new T.Vector3(3.03, 6.35, 0.22), look: new T.Vector3(2.7, 1.95, -2.3) },
     rack: { pos: new T.Vector3(-3.8, 2.75, 5.0), look: new T.Vector3(-4.3, 1.75, -1.2) },
-    about: { pos: new T.Vector3(4.65, 3.9, 2.1), look: new T.Vector3(4.65, 3.9, -4.1) },
+    // aimed straight at the board (x 3.3); the controller shifts it clear of the side panel
+    about: { pos: new T.Vector3(3.3, 3.9, 2.1), look: new T.Vector3(3.3, 3.9, -4.1) },
     resume: { pos: new T.Vector3(-0.7, 3.1, 0.5), look: new T.Vector3(-0.9, 1.7, -1.9) },
     computer: { pos: new T.Vector3(1.17, 2.55, -0.79), look: new T.Vector3(0.55, 2.22, -2.8) },
     contact: { pos: new T.Vector3(4.6, 2.9, 0.9), look: new T.Vector3(4.15, 1.75, -1.6) }
@@ -376,6 +377,8 @@ export function buildScene(T, host) {
     cat, catHit,
     bf, bfPos, bfTarget, bfLand, wings, bfHit,
     cases, caseHits, pickables, zoneTargets, zoneLift, rackBack,
+    // what each side-panel zone's close-up is framed on (the controller fits it beside the panel)
+    zoneSubjects: { about: board, work: player, contact: mail },
     CAM
   };
 }
