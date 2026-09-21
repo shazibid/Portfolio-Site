@@ -1,4 +1,4 @@
-// Everything pinned to the corkboard: polaroids, album sleeves, PNG stickers, push pins,
+// Everything pinned to the corkboard: polaroids, album sleeves, WebP stickers, push pins,
 // the 3d hanging vines and potted plant, and the piano trophy. Positions live in
 // content/corkboard.js; this module only decides how each kind of thing is built.
 import { photos } from '../content/photos.js';
@@ -81,7 +81,7 @@ export function buildCorkboard(T, cork, { woodMat }) {
     place(g, nycCard.x, nycCard.y, nycCard.rot, nextZ());
   }
 
-  // stickers: PNGs dropped into assets/stickers/. A missing file just leaves the slot empty.
+  // stickers: WebPs dropped into assets/stickers/. A missing file just leaves the slot empty.
   stickerSpots.forEach((spot, i) => {
     new T.TextureLoader().load(`./assets/stickers/${spot.file}`, (map) => {
       map.encoding = T.sRGBEncoding;

@@ -35,6 +35,7 @@ const el = {
   workStack: document.getElementById('workStack'),
   workShot: document.getElementById('workShot'),
   workRepo: document.getElementById('workRepo'),
+  workLive: document.getElementById('workLive'),
   workPrivate: document.getElementById('workPrivate'),
   workBody: document.getElementById('workBody'),
   workNote1: document.getElementById('workNote1'),
@@ -239,6 +240,8 @@ function render() {
       el.workShot.src = `./assets/projects/${project.shot}`;
       el.workShot.alt = project.title + ' screenshot';
     }
+    el.workLive.hidden = !project.live;
+    if (project.live) el.workLive.href = project.live;
     el.workRepo.hidden = !project.repo;
     if (project.repo) el.workRepo.href = project.repo;
     el.workPrivate.hidden = !!project.repo;
@@ -377,6 +380,11 @@ function buildQuickView() {
       card.append(img);
     }
     card.append(textEl('p', '', p.body), textEl('p', 'quick-note', p.n1), textEl('p', 'quick-note', p.n2));
+    if (p.live) {
+      const l = textEl('a', 'quick-repo', 'live demo ↗');
+      l.href = p.live; l.target = '_blank'; l.rel = 'noopener';
+      card.append(l);
+    }
     if (p.repo) {
       const a = textEl('a', 'quick-repo', 'code on github ↗');
       a.href = p.repo; a.target = '_blank'; a.rel = 'noopener';

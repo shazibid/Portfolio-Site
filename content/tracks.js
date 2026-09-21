@@ -1,4 +1,4 @@
-// One "now playing" track per project disc, same order as content/projects.js.
+// One "now playing" track per project disc (real songs, 30s previews), same order as content/projects.js.
 // preview is a 30s Apple Music clip (from the iTunes Search API); link opens the full song, art is the album cover printed on the disc.
 export const tracks = [
   {

@@ -2,11 +2,13 @@
 // in the rack (bg/ink) and the case-study text in the side panel read from
 // this list, in this order. Add/reorder/edit a project here only.
 // repo: public code link, or null when the code is private (the panel then says so).
-// shot: optional screenshot/GIF filename in assets/projects/, shown at the top of the panel.
+// live: optional deployed-site link (adds a "live demo" button).
+// shot: optional screenshot / animated WebP filename in assets/projects/, shown at the top of the panel.
 export const projects = [
   {
     title: 'miniplayer',
     repo: 'https://github.com/shazibid/miniplayer',
+    shot: 'miniplayer.webp',
     sub: 'swift · swiftui · 2026',
     bg: '#e9447f',
     ink: '#ffffff',
@@ -19,6 +21,8 @@ export const projects = [
   {
     title: 'se-sitrep',
     repo: 'https://github.com/cse110-sp26-group13/CSE-110-SE-SitRep',
+    live: 'https://cse110-sp26-group13.github.io/CSE-110-SE-SitRep/',
+    shot: 'sitrep.webp',
     sub: 'javascript · supabase · 2026',
     bg: '#2ba7b5',
     ink: '#06232a',

@@ -27,17 +27,17 @@ export const albumSpots = [
 // The nyc postcard: a goal, pinned low on the board (clear of the lamp, lower right).
 export const nycCard = { x: -0.62, y: -1.0, rot: -0.04, w: 0.72 };
 
-// PNG stickers: drop files into assets/stickers/ with these names. A slot whose file
+// WebP stickers: drop files into assets/stickers/ with these names. A slot whose file
 // doesn't exist yet is just empty. `w` is the sticker's width; height follows the image.
 export const stickerSpots = [
-  { file: 'sticker-1.png', x: -1.78, y:  1.05, rot: -0.15, w: 0.34 }, // chrome star
-  { file: 'sticker-2.png', x: -0.98, y:  1.02, rot:  0.12, w: 0.3 },  // bratz
-  { file: 'sticker-3.png', x:  0.65, y: -0.32, rot: -0.12, w: 0.34 }, // apple
-  { file: 'sticker-4.png', x:  0.95, y: -0.34, rot:  0.1,  w: 0.32 }, // google
-  { file: 'sticker-5.png', x:  0.42, y:  0.08, rot:  0.07, w: 0.34 }, // statue of liberty
-  { file: 'sticker-6.png', x:  1.2,  y:  0.04, rot: -0.06, w: 0.38 }, // saturn
-  { file: 'sticker-7.png', x: -0.33, y:  0.36, rot:  0.1,  w: 0.32 },  // persian stamp
-  { file: 'sticker-8.png', x:  1.8,  y:  0.12, rot: -0.1,  w: 0.3 }   // red stamp
+  { file: 'sticker-1.webp', x: -1.78, y:  1.05, rot: -0.15, w: 0.34 }, // chrome star
+  { file: 'sticker-2.webp', x: -0.98, y:  1.02, rot:  0.12, w: 0.3 },  // bratz
+  { file: 'sticker-3.webp', x:  0.65, y: -0.32, rot: -0.12, w: 0.34 }, // apple
+  { file: 'sticker-4.webp', x:  0.95, y: -0.34, rot:  0.1,  w: 0.32 }, // google
+  { file: 'sticker-5.webp', x:  0.42, y:  0.08, rot:  0.07, w: 0.34 }, // statue of liberty
+  { file: 'sticker-6.webp', x:  1.2,  y:  0.04, rot: -0.06, w: 0.38 }, // saturn
+  { file: 'sticker-7.webp', x: -0.33, y:  0.36, rot:  0.1,  w: 0.32 },  // persian stamp
+  { file: 'sticker-8.webp', x:  1.8,  y:  0.12, rot: -0.1,  w: 0.3 }   // red stamp
 ];
 
 export const pinColors = [0xe9447f, 0x4fb8b0, 0xf2c14e, 0x8a6fd6, 0xf07f4a];
