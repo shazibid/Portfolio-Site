@@ -142,6 +142,10 @@
   .topbar-badge { left: max(12px, env(safe-area-inset-left)); }
   .top-actions { right: max(12px, env(safe-area-inset-right)); }
 
+  .quick-links a,
+  .quick-links button { padding: 4px 7px; font-size: 11px; }
+  .mode-toggle { padding: 6px 10px; font-size: 11px; }
+
   .hover-chip {
     top: 48px;
     right: max(12px, env(safe-area-inset-right));

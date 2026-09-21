@@ -36,11 +36,23 @@
 /* short landscape viewports (phones on their side): dock higher, use more height */
 @media (max-height: 500px) {
   .panel {
-    top: 52px;
+    top: 62px;
     right: max(10px, env(safe-area-inset-right));
     width: min(420px, 60vw);
-    height: calc(100% - 62px);
+    height: calc(100% - 72px);
   }
+
+  /* the header and audio bar are chrome: squeeze them so the text gets the height */
+  .panel-header { padding: 6px 12px; }
+  .panel-body { padding: 12px 14px; }
+  .audio-bar { padding: 6px 12px; }
+  .audio-row { gap: 8px; }
+  .play-btn { width: 30px; height: 30px; }
+  .track-progress { margin-top: 3px; }
+  .progress-meta { margin-top: 2px; white-space: nowrap; gap: 8px; }
+  .vol-slider { width: 44px; }
+  .work-body { margin-top: 10px; }
+  .work-shot { margin-bottom: 8px; }
 }
 
 /* folder-style tab on the right edge that opens the site map at idle */
