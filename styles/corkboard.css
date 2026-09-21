@@ -134,6 +134,11 @@
   animation: tipIn .4s ease-out both;
 }
 
+/* portrait phones show the "turn your phone sideways" gate instead; the greeting waits for landscape */
+@media (orientation: portrait) and (max-width: 820px) {
+  .welcome-modal { display: none; }
+}
+
 .welcome-card {
   width: min(400px, 100%);
   max-height: 100%;
