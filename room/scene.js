@@ -15,14 +15,18 @@ import {
 export function buildScene(T, host) {
   const W = host.clientWidth || 900, H = host.clientHeight || 620;
 
+  // touch devices start at 1.5x (a 3x phone screen would otherwise draw 4x the pixels for little
+  // visible gain); the controller lowers it further if frames run slow
+  const coarse = matchMedia('(pointer: coarse)').matches;
   const renderer = new T.WebGLRenderer({ antialias: true });
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.setPixelRatio(Math.min(devicePixelRatio, coarse ? 1.5 : 2));
   renderer.setSize(W, H);
   renderer.outputEncoding = T.sRGBEncoding;
   renderer.toneMapping = T.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.86;
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = T.PCFSoftShadowMap;
+  renderer.shadowMap.autoUpdate = !coarse; // on touch devices the controller redraws shadows every other frame
   const el = renderer.domElement;
   el.style.cssText = 'display:block;width:100%;height:100%;cursor:default;touch-action:none';
 

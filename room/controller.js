@@ -172,9 +172,25 @@ export function attachController(host, T, refs) {
   const camPos = new T.Vector3(1.0, 5.6, 26);
   const camLook = CAM.wide.look.clone();
 
+  // adaptive resolution: when frames run slow, draw fewer pixels (never below 1x) rather than stutter
+  let lastNow = 0, avgDt = 16, frame = 0;
+
   const tick = () => {
     raf = requestAnimationFrame(tick);
     t += 0.016;
+
+    const now = performance.now();
+    if (lastNow) {
+      avgDt += (Math.min(now - lastNow, 100) - avgDt) * 0.1;
+      if (frame > 80 && frame % 40 === 0 && avgDt > 22 && renderer.getPixelRatio() > 1) {
+        renderer.setPixelRatio(Math.max(1, renderer.getPixelRatio() - 0.25));
+        renderer.setSize(host.clientWidth, host.clientHeight, false);
+        avgDt = 16; // give the new resolution a fresh measurement
+      }
+    }
+    lastNow = now;
+    frame++;
+    if (!renderer.shadowMap.autoUpdate) renderer.shadowMap.needsUpdate = frame % 2 === 0;
     intro = Math.max(0, intro - 0.0075);
 
     updateHover();
