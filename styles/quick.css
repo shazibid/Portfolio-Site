@@ -140,12 +140,15 @@
 /* brief confirmation after an email link is tapped (see app.js) */
 .toast {
   position: fixed;
-  left: 50%;
+  /* centered with auto margins, not translateX(-50%): the tipIn animation sets transform */
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: max-content;
   bottom: max(24px, env(safe-area-inset-bottom));
   z-index: 400;
   max-width: calc(100vw - 32px);
   padding: 10px 16px;
-  transform: translateX(-50%);
   background: var(--ink);
   border-radius: 999px;
   box-shadow: 0 12px 32px rgba(42, 39, 64, .3);
